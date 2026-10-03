@@ -2,7 +2,7 @@ import { CurrencyPipe } from '@angular/common';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { CatalogProduct } from '../../core/models';
+import { CatalogProduct } from '../core/models';
 
 @Component({
   selector: 'app-catalog',
@@ -26,7 +26,9 @@ import { CatalogProduct } from '../../core/models';
           <p class="kicker">GOES AUTO PARTS / VEICULOS CHINESES</p>
           <h1>A peca certa para o seu carro chines.</h1>
           <p class="hero-text">
-            Especialistas em pecas para BYD, GWM, Chery, JAC e outros veiculos chineses. Consulte por marca, modelo e ano, confirme a disponibilidade e fale com a nossa equipe pelo WhatsApp.
+            Especialistas em pecas para BYD, GWM, Chery, JAC e outros veiculos chineses. Consulte
+            por marca, modelo e ano, confirme a disponibilidade e fale com a nossa equipe pelo
+            WhatsApp.
           </p>
           <div class="hero-actions">
             <a class="button button-red" href="#catalogo">Ver catalogo</a>
@@ -45,12 +47,19 @@ import { CatalogProduct } from '../../core/models';
             <p class="kicker">CATALOGO ONLINE</p>
             <h2>Pecas para veiculos chineses, sem misterio.</h2>
           </div>
-          <p class="section-note">A disponibilidade muda em tempo real. Confirme marca, modelo, ano e aplicacao com a equipe.</p>
+          <p class="section-note">
+            A disponibilidade muda em tempo real. Confirme marca, modelo, ano e aplicacao com a
+            equipe.
+          </p>
         </div>
         <div class="search-row">
           <label class="search-box">
             <span>Buscar por nome ou SKU</span>
-            <input [(ngModel)]="search" (keyup.enter)="load()" placeholder="Ex.: pastilha, filtro, PAST-001" />
+            <input
+              [(ngModel)]="search"
+              (keyup.enter)="load()"
+              placeholder="Ex.: pastilha, filtro, PAST-001"
+            />
           </label>
           <button class="button button-dark" (click)="load()">Buscar</button>
         </div>
@@ -68,7 +77,9 @@ import { CatalogProduct } from '../../core/models';
                 <div class="product-glyph">{{ glyph(product.name) }}</div>
                 <div class="product-body">
                   <h3>{{ product.name }}</h3>
-                  @if (product.description) { <p>{{ product.description }}</p> }
+                  @if (product.description) {
+                    <p>{{ product.description }}</p>
+                  }
                   <div class="product-foot">
                     <strong>{{ product.sale_price | currency: 'BRL' }}</strong>
                     <span [class.out]="!product.in_stock">
@@ -109,6 +120,7 @@ import { CatalogProduct } from '../../core/models';
 })
 export class CatalogPage implements OnInit {
   private readonly http = inject(HttpClient);
+  private readonly config = window.GOES_CONFIG ?? {};
   readonly products = signal<CatalogProduct[]>([]);
   readonly loading = signal(true);
   readonly error = signal(false);
@@ -123,7 +135,8 @@ export class CatalogPage implements OnInit {
     this.error.set(false);
     let params = new HttpParams();
     if (this.search.trim()) params = params.set('search', this.search.trim());
-    this.http.get<CatalogProduct[]>('/api/v1/catalog/products', { params }).subscribe({
+    const apiBase = (this.config.apiBase || '/api/v1').replace(/\/$/, '');
+    this.http.get<CatalogProduct[]>(`${apiBase}/catalog/products`, { params }).subscribe({
       next: (products) => {
         this.products.set(products);
         this.loading.set(false);
@@ -143,6 +156,7 @@ export class CatalogPage implements OnInit {
     const text = product
       ? `Ola! Tenho interesse na peca ${product.name} (SKU ${product.sku}). Pode confirmar a aplicacao?`
       : 'Ola! Preciso de ajuda para encontrar uma peca.';
-    return `https://wa.me/?text=${encodeURIComponent(text)}`;
+    const number = (this.config.whatsappNumber || '').replace(/\D/g, '');
+    return `https://wa.me/${number}?text=${encodeURIComponent(text)}`;
   }
 }
