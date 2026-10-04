@@ -77,8 +77,8 @@ h2 { font-size:clamp(30px, 4vw, 55px); line-height:.98; letter-spacing:-.055em; 
 .modal-stock.out { color:#b1b4b8; background:#292c30; }
 .modal-description { color:#a8adb5; max-width:700px; line-height:1.55; margin:20px 0 25px; }
 .catalog-listing { display:grid; grid-template-columns:150px 1fr; gap:22px; padding:18px; border:1px solid #303338; background:#17191c; }
-.listing-media { display:grid; place-items:center; min-height:150px; background:#fff; color:#e51b35; font-size:30px; font-weight:900; }
-.listing-media img { width:100%; height:150px; object-fit:contain; }
+.listing-media { align-self:start; display:grid; place-items:center; width:150px; height:150px; background:#fff; color:#e51b35; font-size:30px; font-weight:900; overflow:hidden; }
+.listing-media img { display:block; width:100%; height:100%; object-fit:contain; }
 .listing-info { min-width:0; }
 .listing-top { display:flex; justify-content:space-between; align-items:start; gap:15px; }
 .listing-top small { color:#888e97; font-size:11px; }
@@ -120,7 +120,7 @@ h2 { font-size:clamp(30px, 4vw, 55px); line-height:.98; letter-spacing:-.055em; 
   .catalog-modal-head { display:block; }
   .modal-stock { display:inline-block; margin-top:13px; }
   .catalog-listing { grid-template-columns:1fr; }
-  .listing-media, .listing-media img { min-height:180px; height:180px; }
+  .listing-media, .listing-media img { width:100%; min-height:180px; height:180px; }
   .listing-top { display:block; }
   .listing-top > strong { display:block; margin-top:12px; }
 }
