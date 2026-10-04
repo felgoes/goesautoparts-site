@@ -23,10 +23,10 @@ import { CatalogProduct } from '../core/models';
 
       <section class="hero">
         <div class="hero-copy">
-          <p class="kicker">PEÇAS PARA BYD, GWM, CHERY E JAC</p>
-          <h1>A peça certa para o seu carro.</h1>
+          <p class="kicker">PEÇAS PARA CARROS CHINESES</p>
+          <h1>Peças certas para carros chineses.</h1>
           <p class="hero-text">
-            Busque pelo nome ou código da peça. Informe marca, modelo e ano — nossa equipe confirma a aplicação e a disponibilidade antes do pedido.
+            Peças para BYD, GWM, Chery, JAC e outras marcas chinesas. Busque pelo nome ou código, informe marca, modelo e ano — nossa equipe confirma a aplicação antes do pedido.
           </p>
           <div class="hero-actions">
             <a class="button button-red" href="#catalogo">Encontrar uma peça</a>
