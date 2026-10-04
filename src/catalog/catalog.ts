@@ -75,7 +75,8 @@ import { CatalogProduct } from '../../core/models';
                       {{ product.in_stock ? 'Disponível' : 'Consulte disponibilidade' }}
                     </span>
                   </div>
-                  <a class="product-link" [href]="whatsappUrl(product)">Tenho interesse nesta peça ↗</a>
+                  @if (product.listings[0]?.permalink) { <a class="product-link product-marketplace-link" [href]="product.listings[0].permalink" target="_blank" rel="noopener" (click)="$event.stopPropagation()">Ver anúncio no Mercado Livre ↗</a> }
+                  <a class="product-link" [href]="whatsappUrl(product)" (click)="$event.stopPropagation()">Falar com especialista sobre esta peça</a>
                 </div>
               </article>
             }
