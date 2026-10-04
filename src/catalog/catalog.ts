@@ -23,13 +23,13 @@ import { CatalogProduct } from '../core/models';
 
       <section class="hero">
         <div class="hero-copy">
-          <p class="kicker">GOES AUTO PARTS / PEÇAS PARA VEÍCULOS CHINESES</p>
-          <h1>Encontre a peça certa. Com orientação de quem entende.</h1>
+          <p class="kicker">PEÇAS PARA BYD, GWM, CHERY E JAC</p>
+          <h1>A peça certa para o seu carro.</h1>
           <p class="hero-text">
-            Peças para BYD, GWM, Chery, JAC e outros veículos chineses. Busque pelo nome ou SKU, informe marca, modelo e ano e confirme a aplicação com a nossa equipe.
+            Busque pelo nome ou código da peça. Informe marca, modelo e ano — nossa equipe confirma a aplicação e a disponibilidade antes do pedido.
           </p>
           <div class="hero-actions">
-            <a class="button button-red" href="#catalogo">Explorar catálogo</a>
+            <a class="button button-red" href="#catalogo">Encontrar uma peça</a>
             <a class="button button-quiet" [href]="whatsappUrl()">Falar com especialista</a>
           </div>
         </div>
@@ -43,7 +43,7 @@ import { CatalogProduct } from '../core/models';
         <div class="section-head">
           <div>
             <p class="kicker">CATÁLOGO DE PEÇAS</p>
-            <h2>Encontre pelo nome, SKU ou aplicação.</h2>
+            <h2>Busque por nome, código ou aplicação.</h2>
           </div>
           <p class="section-note">Disponibilidade atualizada conforme os anúncios. Antes de comprar, confirme aplicação, marca, modelo e ano com a equipe.</p>
         </div>
