@@ -17,7 +17,7 @@ import { CatalogProduct } from '../core/models';
         <nav>
           <a href="#catalogo">Catálogo</a>
           <a href="#como-comprar">Como comprar</a>
-          <a class="header-cta" [href]="whatsappUrl()">Falar com especialista</a>
+          <a class="header-cta" [href]="whatsappUrl()" (click)="track('whatsapp_click', { placement: 'header' })">Falar com especialista</a>
         </nav>
       </header>
 
@@ -30,7 +30,7 @@ import { CatalogProduct } from '../core/models';
           </p>
           <div class="hero-actions">
             <a class="button button-red" href="#catalogo">Encontrar uma peça</a>
-            <a class="button button-quiet" [href]="whatsappUrl()">Falar com especialista</a>
+            <a class="button button-quiet" [href]="whatsappUrl()" (click)="track('whatsapp_click', { placement: 'hero' })">Falar com especialista</a>
           </div>
         </div>
         <div class="hero-mark" aria-hidden="true">
@@ -63,7 +63,7 @@ import { CatalogProduct } from '../core/models';
         } @else {
           <div class="product-grid">
             @for (product of products(); track product.id) {
-              <article class="product-card" tabindex="0" (click)="selected.set(product)" (keydown.enter)="selected.set(product)">
+              <article class="product-card" tabindex="0" (click)="openProduct(product)" (keydown.enter)="openProduct(product)">
                 <div class="product-code">{{ product.sku }}</div>
                 @if (product.listings[0]?.thumbnail) { <img class="product-image" [src]="product.listings[0].thumbnail" [alt]="product.name" /> } @else { <div class="product-glyph">{{ glyph(product.name) }}</div> }
                 <div class="product-body">
@@ -75,7 +75,7 @@ import { CatalogProduct } from '../core/models';
                       {{ product.in_stock ? 'Disponível' : 'Consulte disponibilidade' }}
                     </span>
                   </div>
-                  @if (product.listings[0]?.permalink) { <a class="product-link product-marketplace-link" [href]="product.listings[0].permalink" target="_blank" rel="noopener" (click)="$event.stopPropagation()">Ver anúncio no Mercado Livre ↗</a> }
+                  @if (product.listings[0]?.permalink) { <a class="product-link product-marketplace-link" [href]="product.listings[0].permalink" target="_blank" rel="noopener" (click)="$event.stopPropagation(); track('mercado_livre_click', { sku: product.sku, placement: 'product_card' })">Ver anúncio no Mercado Livre ↗</a> }
                   <a class="product-link" [href]="whatsappUrl(product)" (click)="$event.stopPropagation()">Falar com especialista sobre esta peça</a>
                 </div>
               </article>
@@ -91,7 +91,7 @@ import { CatalogProduct } from '../core/models';
             <div class="catalog-modal-head"><div><p class="kicker">DETALHES DA PEÇA</p><h2>{{ product.name }}</h2><p class="modal-sku">SKU {{ product.sku }}</p></div><span [class.out]="!product.in_stock" class="modal-stock">{{ product.in_stock ? 'Disponível' : 'Consulte disponibilidade' }}</span></div>
             <p class="modal-description">{{ product.description || 'Fale com a equipe para confirmar aplicação, compatibilidade e disponibilidade antes de fechar o pedido.' }}</p>
             @for (listing of product.listings; track listing.external_item_id) {
-              <article class="catalog-listing"><div class="listing-media">@if (listing.thumbnail) { <img [src]="listing.thumbnail" [alt]="listing.title || product.name" /> } @else { <span>{{ glyph(product.name) }}</span> }</div><div class="listing-info"><div class="listing-top"><div><small>Anúncio no Mercado Livre · {{ listing.external_item_id }}</small><h3>{{ listing.title || product.name }}</h3></div><strong>{{ (listing.marketplace_price ?? product.sale_price) | currency:'BRL' }}</strong></div><div class="listing-stats"><span>Disponibilidade <b>{{ listing.available_quantity ?? '—' }}</b></span><span>Vendas no anúncio <b>{{ listing.sold_quantity ?? 0 }}</b></span><span>Visualizações <b>{{ listing.visits ?? 0 }}</b></span></div>@if (listing.attributes.length) { <div class="attribute-list">@for (attribute of listing.attributes; track attribute.name) { <span><small>{{ attribute.name }}</small><b>{{ attribute.value }}</b></span> }</div> }<div class="listing-actions"><a class="button button-red" [href]="whatsappUrl(product)">Tenho interesse nesta peça</a>@if (listing.permalink) { <a class="button button-quiet listing-external" [href]="listing.permalink" target="_blank" rel="noopener">Abrir anúncio no Mercado Livre ↗</a> }</div></div></article>
+              <article class="catalog-listing"><div class="listing-media">@if (listing.thumbnail) { <img [src]="listing.thumbnail" [alt]="listing.title || product.name" /> } @else { <span>{{ glyph(product.name) }}</span> }</div><div class="listing-info"><div class="listing-top"><div><small>Anúncio no Mercado Livre · {{ listing.external_item_id }}</small><h3>{{ listing.title || product.name }}</h3></div><strong>{{ (listing.marketplace_price ?? product.sale_price) | currency:'BRL' }}</strong></div><div class="listing-stats"><span>Disponibilidade <b>{{ listing.available_quantity ?? '—' }}</b></span><span>Vendas no anúncio <b>{{ listing.sold_quantity ?? 0 }}</b></span><span>Visualizações <b>{{ listing.visits ?? 0 }}</b></span></div>@if (listing.attributes.length) { <div class="attribute-list">@for (attribute of listing.attributes; track attribute.name) { <span><small>{{ attribute.name }}</small><b>{{ attribute.value }}</b></span> }</div> }<div class="listing-actions"><a class="button button-red" [href]="whatsappUrl(product)" (click)="track('whatsapp_click', { sku: product.sku, placement: 'product_detail' })">Tenho interesse nesta peça</a>@if (listing.permalink) { <a class="button button-quiet listing-external" [href]="listing.permalink" target="_blank" rel="noopener" (click)="track('mercado_livre_click', { sku: product.sku, placement: 'product_detail' })">Abrir anúncio no Mercado Livre ↗</a> }</div></div></article>
             } @empty { <div class="catalog-state">Este produto ainda não possui um anúncio vinculado. Fale com a equipe para consultar alternativas.</div> }
           </section>
         </div>
@@ -115,7 +115,7 @@ import { CatalogProduct } from '../core/models';
           <span>GOES <small>AUTO PARTS</small></span>
         </div>
         <p>Peças para veículos chineses, com orientação de verdade.</p>
-        <a [href]="whatsappUrl()">Falar com a equipe</a>
+        <a [href]="whatsappUrl()" (click)="track('whatsapp_click', { placement: 'footer' })">Falar com a equipe</a>
       </footer>
     </main>
   `,
@@ -129,8 +129,10 @@ export class CatalogPage implements OnInit {
   readonly selected = signal<CatalogProduct | null>(null);
   search = '';
   private searchTimer?: ReturnType<typeof setTimeout>;
+  private lastTrackedSearch = '';
 
   ngOnInit() {
+    this.track('landing_view');
     this.load();
   }
 
@@ -138,10 +140,18 @@ export class CatalogPage implements OnInit {
     this.loading.set(true);
     this.error.set(false);
     let params = new HttpParams();
-    if (this.search.trim()) params = params.set('search', this.search.trim());
+    const query = this.search.trim();
+    if (query) {
+      params = params.set('search', query);
+      if (query !== this.lastTrackedSearch) {
+        this.lastTrackedSearch = query;
+        this.track('catalog_search', { source: 'site' });
+      }
+    }
     this.http.get<CatalogProduct[]>('/api/v1/catalog/products', { params }).subscribe({
       next: (products) => {
         this.products.set(products);
+        if (!products.length && query) this.track('catalog_empty_result', { source: 'site' });
         this.loading.set(false);
       },
       error: () => {
@@ -159,6 +169,23 @@ export class CatalogPage implements OnInit {
 
   glyph(name: string) {
     return name.trim().slice(0, 2).toUpperCase();
+  }
+
+  openProduct(product: CatalogProduct) {
+    this.selected.set(product);
+    this.track('product_view', { sku: product.sku });
+  }
+
+  track(name: string, properties: Record<string, string> = {}) {
+    const key = 'goes-autoparts-anonymous-id';
+    const anonymousId = localStorage.getItem(key) ?? crypto.randomUUID();
+    localStorage.setItem(key, anonymousId);
+    void fetch('/api/v1/telemetry/events', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, source: 'site', anonymous_id: anonymousId, properties }),
+      keepalive: true,
+    }).catch(() => undefined);
   }
 
   whatsappUrl(product?: CatalogProduct) {
