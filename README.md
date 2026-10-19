@@ -2,6 +2,8 @@
 
 Landing page e catálogo público da Goes Auto Parts, em Angular standalone.
 
+Veja as [notas de versão](RELEASE_NOTES.md) para as entregas em produção.
+
 ## Desenvolvimento
 
 ```bash
