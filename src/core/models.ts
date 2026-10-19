@@ -19,9 +19,10 @@ export interface CatalogProduct {
   sku: string;
   name: string;
   description: string | null;
+  manufacturer_part_number?: string | null;
+  images?: { url: string }[];
+  fitments?: { make: string; model: string; year_from?: number | null; year_to?: number | null }[];
   sale_price: number;
   in_stock: boolean;
   listings: CatalogListing[];
 }
-
-
