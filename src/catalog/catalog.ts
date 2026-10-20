@@ -133,6 +133,7 @@ import { CatalogProduct } from '../core/models';
         <div class="catalog-modal-backdrop" (click)="closeProduct()">
           <section
             class="catalog-modal"
+            [class.no-gallery]="!product.images?.length"
             role="dialog"
             aria-modal="true"
             aria-label="Detalhes da peça"
@@ -146,159 +147,192 @@ import { CatalogProduct } from '../core/models';
             >
               ×
             </button>
-            <div class="catalog-modal-head">
-              <div>
-                <p class="kicker">DETALHES DA PEÇA</p>
-                <h2>{{ product.name }}</h2>
-                <p class="modal-sku">SKU {{ product.sku }}</p>
-              </div>
-              <span [class.out]="!product.in_stock" class="modal-stock">{{
-                product.in_stock ? 'Disponível' : 'Consulte disponibilidade'
-              }}</span>
-            </div>
-            <p class="modal-description">
-              {{
-                product.description ||
-                  'Confira fotos, código OEM, aplicação e disponibilidade antes de fechar o pedido.'
-              }}
-            </p>
-            @if (product.images?.length) {
-              <section class="catalog-gallery" aria-label="Fotos da peça">
-                <div class="gallery-stage">
-                  <div
-                    #galleryViewport
-                    class="gallery-viewport"
-                    (scroll)="onPhotoScroll(galleryViewport)"
-                  >
-                    @for (image of product.images; track image.url) {
-                      <figure class="gallery-slide">
-                        <img [src]="image.url" [alt]="product.name" loading="eager" />
-                      </figure>
+            <div class="catalog-modal-layout">
+              @if (product.images?.length) {
+                <section class="catalog-modal-gallery" aria-label="Fotos da peça">
+                  <div class="gallery-topline">
+                    <span>Fotos da peça</span>
+                    @if ((product.images?.length ?? 0) > 1) {
+                      <span class="gallery-count"
+                        >{{ photoIndex() + 1 }} / {{ product.images?.length }}</span
+                      >
                     }
                   </div>
-                  @if ((product.images?.length ?? 0) > 1) {
-                    <button
-                      type="button"
-                      class="gallery-arrow previous"
-                      aria-label="Foto anterior"
-                      (click)="movePhoto(galleryViewport, -1)"
+                  <div class="gallery-stage">
+                    <div
+                      #galleryViewport
+                      class="gallery-viewport"
+                      (scroll)="onPhotoScroll(galleryViewport)"
                     >
-                      ‹
-                    </button>
-                    <button
-                      type="button"
-                      class="gallery-arrow next"
-                      aria-label="Próxima foto"
-                      (click)="movePhoto(galleryViewport, 1)"
-                    >
-                      ›
-                    </button>
-                  }
-                </div>
-                @if ((product.images?.length ?? 0) > 1) {
-                  <div class="gallery-meta">
-                    <span>{{ photoIndex() + 1 }} / {{ product.images?.length ?? 0 }}</span>
-                    <small>Deslize para o lado ou use as setas</small>
-                  </div>
-                  <div class="gallery-thumbs" aria-label="Selecionar foto">
-                    @for (image of product.images; track image.url; let index = $index) {
+                      @for (image of product.images; track image.url) {
+                        <figure class="gallery-slide">
+                          <img [src]="image.url" [alt]="product.name" loading="eager" />
+                        </figure>
+                      }
+                    </div>
+                    @if ((product.images?.length ?? 0) > 1) {
                       <button
                         type="button"
-                        [class.active]="photoIndex() === index"
-                        [attr.aria-label]="'Abrir foto ' + (index + 1)"
-                        (click)="goToPhoto(galleryViewport, index)"
+                        class="gallery-arrow previous"
+                        aria-label="Foto anterior"
+                        (click)="movePhoto(galleryViewport, -1)"
                       >
-                        <img [src]="image.url" [alt]="product.name" loading="lazy" />
+                        ‹
+                      </button>
+                      <button
+                        type="button"
+                        class="gallery-arrow next"
+                        aria-label="Próxima foto"
+                        (click)="movePhoto(galleryViewport, 1)"
+                      >
+                        ›
                       </button>
                     }
                   </div>
-                }
-              </section>
-            }
-            @if (product.manufacturer_part_number) {
-              <p class="modal-meta">
-                Código OEM: <strong>{{ product.manufacturer_part_number }}</strong>
-              </p>
-            }
-            @if (product.fitments?.length) {
-              <div class="fitments">
-                <strong>Aplicação veicular</strong>
-                @for (fitment of product.fitments; track $index) {
-                  <span
-                    >{{ fitment.make }} {{ fitment.model }} {{ fitment.year_from || ''
-                    }}{{
-                      fitment.year_to && fitment.year_to !== fitment.year_from
-                        ? '–' + fitment.year_to
-                        : ''
-                    }}</span
-                  >
-                }
-                <small>Confirme versão e motorização antes de comprar.</small>
-              </div>
-            }
-            @for (listing of product.listings; track listing.external_item_id) {
-              <article class="catalog-listing">
-                <div class="listing-media">
-                  @if (listing.images[0] || listing.thumbnail) {
-                    <img
-                      [src]="listing.images[0] || listing.thumbnail"
-                      [alt]="listing.title || product.name"
-                    />
-                  } @else {
-                    <span>{{ glyph(product.name) }}</span>
-                  }
-                </div>
-                <div class="listing-info">
-                  <div class="listing-top">
-                    <div>
-                      <small>Anúncio no Mercado Livre · {{ listing.external_item_id }}</small>
-                      <h3>{{ listing.title || product.name }}</h3>
-                    </div>
-                    <strong>{{
-                      listing.marketplace_price ?? product.sale_price | currency: 'BRL'
-                    }}</strong>
-                  </div>
-                  <div class="listing-stats">
-                    <span
-                      >Disponibilidade <b>{{ listing.available_quantity ?? '—' }}</b></span
-                    ><span
-                      >Vendas no anúncio <b>{{ listing.sold_quantity ?? 0 }}</b></span
-                    ><span
-                      >Visualizações <b>{{ listing.visits ?? 0 }}</b></span
-                    >
-                  </div>
-                  @if (listing.attributes.length) {
-                    <div class="attribute-list">
-                      @for (attribute of listing.attributes; track attribute.name) {
-                        <span
-                          ><small>{{ attribute.name }}</small
-                          ><b>{{ attribute.value }}</b></span
+                  @if ((product.images?.length ?? 0) > 1) {
+                    <div class="gallery-thumbs" aria-label="Selecionar foto">
+                      @for (image of product.images; track image.url; let index = $index) {
+                        <button
+                          type="button"
+                          [class.active]="photoIndex() === index"
+                          [attr.aria-label]="'Abrir foto ' + (index + 1)"
+                          (click)="goToPhoto(galleryViewport, index)"
                         >
+                          <img [src]="image.url" [alt]="product.name" loading="lazy" />
+                        </button>
                       }
                     </div>
                   }
-                  <div class="listing-actions">
-                    @if (listing.permalink) {
-                      <a
-                        class="button button-quiet listing-external"
-                        [href]="listing.permalink"
-                        target="_blank"
-                        rel="noopener"
-                        (click)="
-                          track('mercado_livre_click', {
-                            sku: product.sku,
-                            placement: 'product_detail',
-                          })
-                        "
-                        >Ver oferta no Mercado Livre ↗</a
-                      >
+                </section>
+              }
+
+              <div class="catalog-modal-content">
+                <div class="catalog-modal-head">
+                  <div>
+                    <p class="kicker">FICHA TÉCNICA</p>
+                    <h2>{{ product.name }}</h2>
+                    <p class="modal-sku">SKU {{ product.sku }}</p>
+                  </div>
+                  <span [class.out]="!product.in_stock" class="modal-stock">{{
+                    product.in_stock ? 'Disponível' : 'Consulte disponibilidade'
+                  }}</span>
+                </div>
+                <p class="modal-description">
+                  {{
+                    product.description ||
+                      'Confira fotos, código OEM, aplicação e disponibilidade antes de fechar o pedido.'
+                  }}
+                </p>
+                @if (product.manufacturer_part_number || product.fitments?.length) {
+                  <div class="catalog-facts">
+                    @if (product.manufacturer_part_number) {
+                      <span>
+                        <small>Código OEM</small>
+                        <strong>{{ product.manufacturer_part_number }}</strong>
+                      </span>
+                    }
+                    @if (product.fitments?.[0]; as fitment) {
+                      <span>
+                        <small>Aplicação</small>
+                        <strong>{{ fitment.make }} {{ fitment.model }}</strong>
+                      </span>
                     }
                   </div>
-                </div>
-              </article>
-            } @empty {
-              <div class="catalog-state">Este produto ainda não possui um anúncio vinculado.</div>
-            }
+                }
+                @if (product.fitments?.length) {
+                  <div class="fitments">
+                    <strong>Aplicação veicular</strong>
+                    <div>
+                      @for (fitment of product.fitments; track $index) {
+                        <span
+                          >{{ fitment.make }} {{ fitment.model }} {{ fitment.year_from || ''
+                          }}{{
+                            fitment.year_to && fitment.year_to !== fitment.year_from
+                              ? '–' + fitment.year_to
+                              : ''
+                          }}</span
+                        >
+                      }
+                    </div>
+                    <small>Confirme versão e motorização antes de comprar.</small>
+                  </div>
+                }
+
+                @for (listing of product.listings; track listing.external_item_id) {
+                  <article class="catalog-listing">
+                    <div class="listing-media">
+                      @if (listing.images[0] || listing.thumbnail) {
+                        <img
+                          [src]="listing.images[0] || listing.thumbnail"
+                          [alt]="listing.title || product.name"
+                        />
+                      } @else {
+                        <span>{{ glyph(product.name) }}</span>
+                      }
+                    </div>
+                    <div class="listing-info">
+                      <div class="listing-top">
+                        <div>
+                          <small>Mercado Livre · {{ listing.external_item_id }}</small>
+                          <h3>{{ listing.title || product.name }}</h3>
+                        </div>
+                        <strong>{{
+                          listing.marketplace_price ?? product.sale_price | currency: 'BRL'
+                        }}</strong>
+                      </div>
+                      <div class="listing-stats">
+                        <span
+                          >Estoque <b>{{ listing.available_quantity ?? '—' }}</b></span
+                        >
+                        <span
+                          >Vendas <b>{{ listing.sold_quantity ?? 0 }}</b></span
+                        >
+                        <span
+                          >Visitas <b>{{ listing.visits ?? 0 }}</b></span
+                        >
+                      </div>
+                      @if (listing.attributes.length) {
+                        <details class="listing-specs">
+                          <summary>
+                            Especificações do anúncio
+                            <span>{{ listing.attributes.length }}</span>
+                          </summary>
+                          <div class="attribute-list">
+                            @for (attribute of listing.attributes; track attribute.name) {
+                              <span
+                                ><small>{{ attribute.name }}</small
+                                ><b>{{ attribute.value }}</b></span
+                              >
+                            }
+                          </div>
+                        </details>
+                      }
+                      <div class="listing-actions">
+                        @if (listing.permalink) {
+                          <a
+                            class="button button-quiet listing-external"
+                            [href]="listing.permalink"
+                            target="_blank"
+                            rel="noopener"
+                            (click)="
+                              track('mercado_livre_click', {
+                                sku: product.sku,
+                                placement: 'product_detail',
+                              })
+                            "
+                            >Ver oferta no Mercado Livre ↗</a
+                          >
+                        }
+                      </div>
+                    </div>
+                  </article>
+                } @empty {
+                  <div class="listing-empty">
+                    Este produto ainda não possui um anúncio vinculado.
+                  </div>
+                }
+              </div>
+            </div>
           </section>
         </div>
       }

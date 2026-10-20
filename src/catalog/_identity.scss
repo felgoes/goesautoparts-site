@@ -212,7 +212,10 @@
     background: #fff;
     color: #090a0d;
     border: 1px solid #e3e9e6;
-    border-radius: 8px;
+    border-radius: 20px;
+  }
+  .catalog-modal-content {
+    background: #fff;
   }
   .catalog-modal-close {
     color: #52615b;
@@ -226,7 +229,7 @@
   .modal-stock {
     color: #087a60;
     background: #e3f1eb;
-    border-radius: 8px;
+    border-radius: 999px;
   }
   .modal-stock.out {
     color: #52615b;
@@ -235,10 +238,22 @@
   .fitments {
     display: grid;
     gap: 8px;
-    padding: 16px;
-    margin: 16px 0;
+    padding: 12px;
+    margin: 10px 0;
     border: 1px solid #e3e9e6;
-    border-radius: 8px;
+    border-radius: 12px;
+    background: #fff;
+  }
+  .fitments > div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .fitments > div span {
+    padding: 5px 8px;
+    border-radius: 999px;
+    background: #e3f1eb;
+    font-size: 11px;
   }
   .fitments span,
   .fitments small {
@@ -247,7 +262,7 @@
   .catalog-listing {
     background: #f8f9f7;
     border: 1px solid #e3e9e6;
-    border-radius: 8px;
+    border-radius: 12px;
   }
   .listing-media {
     color: #087a60;
@@ -266,6 +281,14 @@
   }
   .attribute-list b {
     color: #090a0d;
+  }
+  .listing-specs {
+    background: #fff;
+    border-color: #e3e9e6;
+  }
+  .listing-empty {
+    border-color: #e3e9e6;
+    color: #52615b;
   }
   .listing-external {
     color: #087a60;
@@ -316,6 +339,9 @@
     }
     .catalog-section {
       padding: 48px 0;
+    }
+    .catalog-modal {
+      border-radius: 16px;
     }
     .product-image,
     .product-glyph {
