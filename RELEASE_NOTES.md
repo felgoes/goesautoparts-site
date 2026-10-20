@@ -1,5 +1,14 @@
 # Notas de versão
 
+## 20/10/2026 — cartas de compatibilidade veicular
+
+- As aplicações do produto agora aparecem como cartas colecionáveis no estilo “Super Trunfo”, agrupadas por marca e modelo.
+- Cada carta mostra faixa de anos, motor, principal versão, quantidade de aplicações e confirmação de compatibilidade.
+- As cartas ficam em uma faixa horizontal no modal e continuam legíveis no celular.
+- A busca do catálogo também aceita aplicação veicular, incluindo modelo e motor.
+
+Versão publicada: [96e80a4](https://github.com/felgoes/goesautoparts-site/commit/96e80a4).
+
 ## 20/10/2026 — modal compacto do produto
 
 - O modal foi reduzido para 760 px de largura e até 460 px de altura, com galeria de 320 px e foto limitada a 170 px.
