@@ -1,5 +1,12 @@
 # Notas de versão
 
+## 20/10/2026 — rolagem e busca instantânea nas aplicações
+
+- O modal inteiro agora responde à rolagem, inclusive quando o cursor está sobre a galeria.
+- A busca de modelos e motores foi ligada diretamente ao evento de digitação, atualizando a lista a cada tecla.
+
+Versão publicada: [2ff59a3](https://github.com/felgoes/goesautoparts-site/commit/2ff59a3).
+
 ## 20/10/2026 — lista inteligente de aplicações
 
 - As cartas foram substituídas por uma lista agrupada por marca e modelo.
