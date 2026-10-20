@@ -248,8 +248,8 @@ interface FitmentCard {
                     <label class="fitment-search">
                       <span aria-hidden="true">⌕</span>
                       <input
-                        [ngModel]="fitmentQuery()"
-                        (ngModelChange)="setFitmentQuery($event)"
+                        [value]="fitmentQuery()"
+                        (input)="setFitmentQuery($any($event.target).value)"
                         placeholder="Buscar modelo ou motor"
                         aria-label="Buscar modelo ou motor compatível"
                       />

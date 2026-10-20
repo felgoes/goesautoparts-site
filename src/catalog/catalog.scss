@@ -356,6 +356,9 @@ h2 {
   grid-template-columns: 320px minmax(0, 1fr);
   min-height: 0;
   max-height: min(66vh, 460px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
 }
 .catalog-modal.no-gallery .catalog-modal-layout {
   grid-template-columns: 1fr;
@@ -369,8 +372,7 @@ h2 {
 .catalog-modal-content {
   min-width: 0;
   min-height: 0;
-  overflow-y: auto;
-  overscroll-behavior: contain;
+  overflow: visible;
   padding: 18px;
 }
 .gallery-topline {
