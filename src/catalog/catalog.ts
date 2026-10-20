@@ -260,70 +260,48 @@ import { CatalogProduct } from '../core/models';
 
                 @for (listing of product.listings; track listing.external_item_id) {
                   <article class="catalog-listing">
-                    <div class="listing-media">
-                      @if (listing.images[0] || listing.thumbnail) {
-                        <img
-                          [src]="listing.images[0] || listing.thumbnail"
-                          [alt]="listing.title || product.name"
-                        />
-                      } @else {
-                        <span>{{ glyph(product.name) }}</span>
-                      }
+                    <div class="listing-top">
+                      <small>Oferta no Mercado Livre · {{ listing.external_item_id }}</small>
+                      <strong>{{
+                        listing.marketplace_price ?? product.sale_price | currency: 'BRL'
+                      }}</strong>
                     </div>
-                    <div class="listing-info">
-                      <div class="listing-top">
-                        <div>
-                          <small>Mercado Livre · {{ listing.external_item_id }}</small>
-                          <h3>{{ listing.title || product.name }}</h3>
+                    <p class="offer-stock">
+                      Estoque no anúncio
+                      <b>{{ listing.available_quantity ?? '—' }}</b>
+                    </p>
+                    @if (listing.attributes.length) {
+                      <details class="listing-specs">
+                        <summary>
+                          Especificações do anúncio
+                          <span>{{ listing.attributes.length }}</span>
+                        </summary>
+                        <div class="attribute-list">
+                          @for (attribute of listing.attributes; track attribute.name) {
+                            <span
+                              ><small>{{ attribute.name }}</small
+                              ><b>{{ attribute.value }}</b></span
+                            >
+                          }
                         </div>
-                        <strong>{{
-                          listing.marketplace_price ?? product.sale_price | currency: 'BRL'
-                        }}</strong>
-                      </div>
-                      <div class="listing-stats">
-                        <span
-                          >Estoque <b>{{ listing.available_quantity ?? '—' }}</b></span
+                      </details>
+                    }
+                    <div class="listing-actions">
+                      @if (listing.permalink) {
+                        <a
+                          class="button button-quiet listing-external"
+                          [href]="listing.permalink"
+                          target="_blank"
+                          rel="noopener"
+                          (click)="
+                            track('mercado_livre_click', {
+                              sku: product.sku,
+                              placement: 'product_detail',
+                            })
+                          "
+                          >Ver oferta no Mercado Livre ↗</a
                         >
-                        <span
-                          >Vendas <b>{{ listing.sold_quantity ?? 0 }}</b></span
-                        >
-                        <span
-                          >Visitas <b>{{ listing.visits ?? 0 }}</b></span
-                        >
-                      </div>
-                      @if (listing.attributes.length) {
-                        <details class="listing-specs">
-                          <summary>
-                            Especificações do anúncio
-                            <span>{{ listing.attributes.length }}</span>
-                          </summary>
-                          <div class="attribute-list">
-                            @for (attribute of listing.attributes; track attribute.name) {
-                              <span
-                                ><small>{{ attribute.name }}</small
-                                ><b>{{ attribute.value }}</b></span
-                              >
-                            }
-                          </div>
-                        </details>
                       }
-                      <div class="listing-actions">
-                        @if (listing.permalink) {
-                          <a
-                            class="button button-quiet listing-external"
-                            [href]="listing.permalink"
-                            target="_blank"
-                            rel="noopener"
-                            (click)="
-                              track('mercado_livre_click', {
-                                sku: product.sku,
-                                placement: 'product_detail',
-                              })
-                            "
-                            >Ver oferta no Mercado Livre ↗</a
-                          >
-                        }
-                      </div>
                     </div>
                   </article>
                 } @empty {

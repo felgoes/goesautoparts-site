@@ -315,13 +315,13 @@ h2 {
   inset: 0;
   display: grid;
   place-items: center;
-  padding: 18px;
+  padding: 14px;
   background: #000b;
 }
 .catalog-modal {
   position: relative;
-  width: min(960px, 100%);
-  max-height: min(86vh, 720px);
+  width: min(760px, 100%);
+  max-height: min(66vh, 460px);
   overflow: hidden;
   padding: 0;
   background: #111316;
@@ -339,30 +339,30 @@ h2 {
   right: 12px;
   display: grid;
   place-items: center;
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
   padding: 0;
   border: 0;
   border-radius: 50%;
   background: #ffffffe8;
   color: #aeb2b8;
-  font-size: 24px;
+  font-size: 21px;
   line-height: 1;
   cursor: pointer;
   box-shadow: 0 4px 14px #0002;
 }
 .catalog-modal-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1.12fr) minmax(320px, 0.88fr);
+  grid-template-columns: 320px minmax(0, 1fr);
   min-height: 0;
-  max-height: min(86vh, 720px);
+  max-height: min(66vh, 460px);
 }
 .catalog-modal.no-gallery .catalog-modal-layout {
   grid-template-columns: 1fr;
 }
 .catalog-modal-gallery {
   min-width: 0;
-  padding: 22px;
+  padding: 16px;
   border-right: 1px solid #34383a;
   background: #f5f7f5;
 }
@@ -371,7 +371,7 @@ h2 {
   min-height: 0;
   overflow-y: auto;
   overscroll-behavior: contain;
-  padding: 26px 24px;
+  padding: 18px;
 }
 .gallery-topline {
   display: flex;
@@ -404,7 +404,7 @@ h2 {
   max-width: 420px;
   margin-bottom: 6px;
   color: #090a0d;
-  font-size: clamp(23px, 2.4vw, 29px);
+  font-size: clamp(20px, 2vw, 23px);
   line-height: 1.18;
 }
 .modal-sku {
@@ -430,8 +430,8 @@ h2 {
 .modal-description {
   color: #52615b;
   line-height: 1.5;
-  margin: 16px 0;
-  font-size: 14px;
+  margin: 10px 0;
+  font-size: 13px;
 }
 .gallery-stage {
   position: relative;
@@ -452,11 +452,12 @@ h2 {
   display: none;
 }
 .gallery-slide {
+  --gallery-stage-height: 170px;
   flex: 0 0 100%;
   min-width: 0;
-  height: 270px;
+  height: var(--gallery-stage-height);
   margin: 0;
-  padding: 10px 48px;
+  padding: 8px 42px;
   box-sizing: border-box;
   display: grid;
   place-items: center;
@@ -468,22 +469,22 @@ h2 {
   width: auto;
   height: auto;
   max-width: 100%;
-  max-height: 100%;
+  max-height: calc(var(--gallery-stage-height) - 16px);
   object-fit: contain;
 }
 .gallery-arrow {
   position: absolute;
   z-index: 1;
   top: 50%;
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
   padding: 0;
   transform: translateY(-50%);
   border: 0;
   border-radius: 50%;
   background: #111316b8;
   color: #fff;
-  font-size: 25px;
+  font-size: 22px;
   line-height: 1;
   cursor: pointer;
 }
@@ -497,12 +498,12 @@ h2 {
   display: flex;
   gap: 7px;
   overflow-x: auto;
-  padding: 12px 1px 2px;
+  padding: 10px 1px 1px;
   scrollbar-width: thin;
 }
 .gallery-thumbs button {
-  flex: 0 0 46px;
-  height: 42px;
+  flex: 0 0 30px;
+  height: 28px;
   padding: 2px;
   border: 2px solid transparent;
   border-radius: 9px;
@@ -522,13 +523,13 @@ h2 {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 8px;
-  margin: 14px 0;
+  margin: 10px 0;
 }
 .catalog-facts > span {
   display: grid;
   gap: 3px;
   min-width: 0;
-  padding: 10px 11px;
+  padding: 8px 9px;
   border: 1px solid #e3e9e6;
   border-radius: 11px;
   background: #f8faf9;
@@ -553,35 +554,10 @@ h2 {
   text-align: center;
 }
 .catalog-listing {
-  display: grid;
-  grid-template-columns: 68px minmax(0, 1fr);
-  gap: 13px;
-  padding: 13px;
+  padding: 11px;
   border: 1px solid #303338;
   border-radius: 14px;
   background: #17191c;
-}
-.listing-media {
-  align-self: start;
-  display: grid;
-  place-items: center;
-  width: 68px;
-  height: 68px;
-  border-radius: 10px;
-  background: #fff;
-  color: #e51b35;
-  font-size: 18px;
-  font-weight: 900;
-  overflow: hidden;
-}
-.listing-media img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-.listing-info {
-  min-width: 0;
 }
 .listing-top {
   display: flex;
@@ -593,36 +569,26 @@ h2 {
   color: #888e97;
   font-size: 10px;
 }
-.listing-top h3 {
-  color: #fff;
-  font-size: 14px;
-  line-height: 1.3;
-  margin: 4px 0 0;
-}
 .listing-top > strong {
   color: #fff;
   font-size: 16px;
   white-space: nowrap;
 }
-.listing-stats {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 6px;
-  margin: 12px 0;
-  padding: 10px 0;
-  border-top: 1px solid #2a2d31;
-  border-bottom: 1px solid #2a2d31;
-  color: #8e949d;
-  font-size: 10px;
+.offer-stock {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 7px 0 9px;
+  color: #52615b;
+  font-size: 11px;
 }
-.listing-stats b {
-  display: block;
-  color: #fff;
-  margin-top: 3px;
+.offer-stock b {
+  color: #090a0d;
   font-size: 12px;
 }
 .listing-specs {
-  margin: 10px 0;
+  margin: 8px 0;
   border: 1px solid #e3e9e6;
   border-radius: 10px;
   background: #fff;
@@ -632,7 +598,7 @@ h2 {
   align-items: center;
   justify-content: space-between;
   gap: 10px;
-  padding: 10px 11px;
+  padding: 8px 9px;
   color: #090a0d;
   font-size: 12px;
   font-weight: 700;
@@ -814,8 +780,8 @@ h2 {
     margin-top: 13px;
   }
   .gallery-slide {
-    height: clamp(190px, 34dvh, 260px);
-    padding: 8px 38px;
+    --gallery-stage-height: clamp(145px, 22dvh, 180px);
+    padding: 8px 32px;
   }
   .gallery-arrow {
     width: 32px;
@@ -829,17 +795,8 @@ h2 {
     right: 4px;
   }
   .gallery-thumbs button {
-    flex-basis: 42px;
-    height: 38px;
-  }
-  .catalog-listing {
-    grid-template-columns: 56px minmax(0, 1fr);
-  }
-  .listing-media,
-  .listing-media img {
-    width: 56px;
-    min-height: 56px;
-    height: 56px;
+    flex-basis: 32px;
+    height: 30px;
   }
   .listing-top {
     display: block;
