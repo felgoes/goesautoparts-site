@@ -14,6 +14,18 @@ export interface CatalogListing {
   synchronized_at: string | null;
 }
 
+export interface CatalogFitment {
+  make: string;
+  model: string;
+  year_from?: number | null;
+  year_to?: number | null;
+  engine?: string | null;
+  version?: string | null;
+  catalog_product_id?: string | null;
+  source?: string | null;
+  external_item_id?: string | null;
+}
+
 export interface CatalogProduct {
   id: string;
   sku: string;
@@ -21,7 +33,7 @@ export interface CatalogProduct {
   description: string | null;
   manufacturer_part_number?: string | null;
   images?: { url: string }[];
-  fitments?: { make: string; model: string; year_from?: number | null; year_to?: number | null }[];
+  fitments?: CatalogFitment[];
   sale_price: number;
   in_stock: boolean;
   listings: CatalogListing[];

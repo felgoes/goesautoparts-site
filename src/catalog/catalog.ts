@@ -1,8 +1,18 @@
 import { CurrencyPipe } from '@angular/common';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Component, HostListener, OnInit, inject, signal } from '@angular/core';
+import { Component, HostListener, OnInit, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { CatalogProduct } from '../core/models';
+import { CatalogFitment, CatalogProduct } from '../core/models';
+
+interface FitmentCard {
+  key: string;
+  make: string;
+  model: string;
+  yearLabel: string;
+  engines: string[];
+  versions: string[];
+  count: number;
+}
 
 @Component({
   selector: 'app-catalog',
@@ -223,6 +233,43 @@ import { CatalogProduct } from '../core/models';
                       'Confira fotos, código OEM, aplicação e disponibilidade antes de fechar o pedido.'
                   }}
                 </p>
+                @if (fitmentCards().length) {
+                  <section class="fitment-deck" aria-label="Aplicações compatíveis">
+                    <div class="fitment-deck-head">
+                      <div>
+                        <p class="kicker">APLICAÇÕES</p>
+                        <h3>Compatibilidade veicular</h3>
+                      </div>
+                      <span>{{ product.fitments?.length }} versões</span>
+                    </div>
+                    <div class="fitment-rail">
+                      @for (card of fitmentCards(); track card.key) {
+                        <article class="fitment-card">
+                          <div class="fitment-card-top">
+                            <span>{{ card.make }}</span>
+                            <small>APLICAÇÃO</small>
+                          </div>
+                          <strong>{{ card.model }}</strong>
+                          <b class="fitment-years">{{ card.yearLabel }}</b>
+                          <dl>
+                            <div>
+                              <dt>Motor</dt>
+                              <dd>{{ card.engines.join(' · ') || 'Consulte' }}</dd>
+                            </div>
+                            <div>
+                              <dt>Versão</dt>
+                              <dd>{{ card.versions[0] || 'Compatível' }}</dd>
+                            </div>
+                          </dl>
+                          <footer>
+                            <span>{{ card.count }} aplicações</span>
+                            <b>✓ Compatível</b>
+                          </footer>
+                        </article>
+                      }
+                    </div>
+                  </section>
+                }
                 @if (product.manufacturer_part_number || product.fitments?.length) {
                   <div class="catalog-facts">
                     @if (product.manufacturer_part_number) {
@@ -239,25 +286,6 @@ import { CatalogProduct } from '../core/models';
                     }
                   </div>
                 }
-                @if (product.fitments?.length) {
-                  <div class="fitments">
-                    <strong>Aplicação veicular</strong>
-                    <div>
-                      @for (fitment of product.fitments; track $index) {
-                        <span
-                          >{{ fitment.make }} {{ fitment.model }} {{ fitment.year_from || ''
-                          }}{{
-                            fitment.year_to && fitment.year_to !== fitment.year_from
-                              ? '–' + fitment.year_to
-                              : ''
-                          }}</span
-                        >
-                      }
-                    </div>
-                    <small>Confirme versão e motorização antes de comprar.</small>
-                  </div>
-                }
-
                 @for (listing of product.listings; track listing.external_item_id) {
                   <article class="catalog-listing">
                     <div class="listing-top">
@@ -344,6 +372,7 @@ export class CatalogPage implements OnInit {
   readonly error = signal(false);
   readonly selected = signal<CatalogProduct | null>(null);
   readonly photoIndex = signal(0);
+  readonly fitmentCards = computed(() => this.groupFitments(this.selected()?.fitments ?? []));
   search = '';
   private searchTimer?: ReturnType<typeof setTimeout>;
   private lastTrackedSearch = '';
@@ -416,6 +445,60 @@ export class CatalogPage implements OnInit {
   onPhotoScroll(viewport: HTMLElement) {
     if (!viewport.clientWidth) return;
     this.photoIndex.set(Math.round(viewport.scrollLeft / viewport.clientWidth));
+  }
+
+  private groupFitments(fitments: CatalogFitment[]): FitmentCard[] {
+    const cards = new Map<
+      string,
+      {
+        make: string;
+        model: string;
+        years: number[];
+        engines: Set<string>;
+        versions: Set<string>;
+        count: number;
+      }
+    >();
+    for (const fitment of fitments) {
+      const make = fitment.make.trim();
+      const model = fitment.model.trim();
+      if (!make || !model) continue;
+      const key = `${make.toLocaleLowerCase('pt-BR')}|${model.toLocaleLowerCase('pt-BR')}`;
+      const card = cards.get(key) ?? {
+        make,
+        model,
+        years: [],
+        engines: new Set<string>(),
+        versions: new Set<string>(),
+        count: 0,
+      };
+      if (fitment.year_from) card.years.push(fitment.year_from);
+      if (fitment.year_to) card.years.push(fitment.year_to);
+      if (fitment.engine) card.engines.add(fitment.engine);
+      if (fitment.version) card.versions.add(fitment.version);
+      card.count += 1;
+      cards.set(key, card);
+    }
+    return [...cards.entries()]
+      .map(([key, card]) => ({
+        key,
+        make: card.make,
+        model: card.model,
+        yearLabel: this.yearRange(card.years),
+        engines: [...card.engines].sort(),
+        versions: [...card.versions].sort(),
+        count: card.count,
+      }))
+      .sort((left, right) =>
+        `${left.make} ${left.model}`.localeCompare(`${right.make} ${right.model}`, 'pt-BR'),
+      );
+  }
+
+  private yearRange(years: number[]): string {
+    if (!years.length) return 'Consulte o ano';
+    const first = Math.min(...years);
+    const last = Math.max(...years);
+    return first === last ? String(first) : `${first}–${last}`;
   }
 
   @HostListener('document:keydown.arrowleft')
