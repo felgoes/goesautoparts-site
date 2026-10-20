@@ -1,5 +1,14 @@
 # Notas de versão
 
+## 20/10/2026 — lista inteligente de aplicações
+
+- As cartas foram substituídas por uma lista agrupada por marca e modelo.
+- Cada modelo mostra faixa de anos, motores e quantidade de versões; os detalhes abrem apenas quando solicitados.
+- Quatro modelos aparecem inicialmente e o restante fica em “Ver todos”.
+- A busca interna filtra por modelo ou motor sem poluir o modal.
+
+Versão publicada: [4990c90](https://github.com/felgoes/goesautoparts-site/commit/4990c90).
+
 ## 20/10/2026 — cartas de compatibilidade veicular
 
 - As aplicações do produto agora aparecem como cartas colecionáveis no estilo “Super Trunfo”, agrupadas por marca e modelo.
