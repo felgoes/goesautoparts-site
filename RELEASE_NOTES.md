@@ -1,5 +1,13 @@
 # Notas de versão
 
+## 20/10/2026 — galeria do modal responsiva
+
+- As fotos deixaram de ser ampliadas para preencher todo o modal e agora respeitam o tamanho e a proporção originais.
+- O palco da galeria foi compactado, as setas ganharam uma área própria e o conjunto foi ajustado para desktop, tablet e celular.
+- O modal usa melhor a altura da tela, mantém as miniaturas roláveis e volta à primeira foto ao reabrir o produto.
+
+Versão publicada: [d4ffe2b](https://github.com/felgoes/goesautoparts-site/commit/d4ffe2b).
+
 ## 20/10/2026 — catálogo com foco em oficinas
 
 - O posicionamento passou de loja para consumidor final para um catálogo de reposição voltado a oficinas, mecânicos, auto centers e lojas de autopeças.
