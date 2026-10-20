@@ -320,10 +320,11 @@ h2 {
 }
 .catalog-modal {
   position: relative;
-  width: min(920px, 100%);
-  max-height: 90vh;
+  width: min(860px, 100%);
+  max-height: min(92vh, 900px);
   overflow: auto;
-  padding: 34px;
+  overscroll-behavior: contain;
+  padding: clamp(22px, 3vw, 32px);
   background: #111316;
   border: 1px solid #3a3d42;
   box-shadow: 0 28px 80px #000b;
@@ -381,8 +382,8 @@ h2 {
   position: relative;
   overflow: hidden;
   border: 1px solid #34383a;
-  border-radius: 10px;
-  background: #fff;
+  border-radius: 16px;
+  background: #f7f7f4;
 }
 .gallery-viewport {
   display: flex;
@@ -398,8 +399,10 @@ h2 {
 .gallery-slide {
   flex: 0 0 100%;
   min-width: 0;
-  height: clamp(300px, 52vh, 500px);
+  height: clamp(240px, 42vh, 360px);
   margin: 0;
+  padding: 18px 62px;
+  box-sizing: border-box;
   display: grid;
   place-items: center;
   scroll-snap-align: start;
@@ -407,8 +410,10 @@ h2 {
 }
 .gallery-slide img {
   display: block;
-  width: 100%;
-  height: 100%;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
   object-fit: contain;
 }
 .gallery-arrow {
@@ -416,20 +421,22 @@ h2 {
   z-index: 1;
   top: 50%;
   width: 44px;
-  height: 54px;
+  height: 44px;
+  padding: 0;
   transform: translateY(-50%);
   border: 0;
-  background: #090a0cdd;
+  border-radius: 50%;
+  background: #111316cc;
   color: #fff;
-  font-size: 38px;
+  font-size: 30px;
   line-height: 1;
   cursor: pointer;
 }
 .gallery-arrow.previous {
-  left: 0;
+  left: 12px;
 }
 .gallery-arrow.next {
-  right: 0;
+  right: 12px;
 }
 .gallery-meta {
   display: flex;
@@ -450,8 +457,8 @@ h2 {
   scrollbar-width: thin;
 }
 .gallery-thumbs button {
-  flex: 0 0 74px;
-  height: 62px;
+  flex: 0 0 64px;
+  height: 54px;
   padding: 3px;
   border: 2px solid transparent;
   background: #fff;
@@ -648,23 +655,42 @@ h2 {
     flex-wrap: wrap;
   }
   .catalog-modal-backdrop {
-    padding: 12px;
+    padding: 8px;
   }
   .catalog-modal {
-    padding: 25px 18px;
+    width: 100%;
+    max-height: calc(100dvh - 16px);
+    padding: 20px 14px 18px;
+    border-radius: 16px;
   }
   .catalog-modal-head {
     display: block;
+    padding-right: 30px;
+  }
+  .catalog-modal-head h2 {
+    font-size: clamp(22px, 7vw, 30px);
   }
   .modal-stock {
     display: inline-block;
     margin-top: 13px;
   }
   .gallery-slide {
-    height: 330px;
+    height: clamp(210px, 38dvh, 300px);
+    padding: 10px 34px;
   }
   .gallery-arrow {
-    width: 38px;
+    width: 32px;
+    height: 32px;
+    font-size: 23px;
+  }
+  .gallery-arrow.previous {
+    left: 4px;
+  }
+  .gallery-arrow.next {
+    right: 4px;
+  }
+  .gallery-thumbs button {
+    flex-basis: 58px;
     height: 48px;
   }
   .gallery-meta small {
