@@ -1,5 +1,12 @@
 # Notas de versão
 
+## 20/10/2026 — catálogo sem chamadas de contato
+
+- Os botões e links “Falar com especialista” foram removidos do cabeçalho, da abertura, dos produtos, dos detalhes e do rodapé.
+- Os links para os anúncios no Mercado Livre permanecem disponíveis.
+
+Versão publicada: [ca0b17a](https://github.com/felgoes/goesautoparts-site/commit/ca0b17a).
+
 ## 20/10/2026 — galeria completa no catálogo
 
 - Produtos com anúncios agora exibem todas as fotos do Mercado Livre em um carrossel lateral.
