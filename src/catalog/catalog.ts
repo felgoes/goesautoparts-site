@@ -14,21 +14,22 @@ import { CatalogProduct } from '../core/models';
           <img src="/brand/goes-wordmark.png" alt="Goes Auto Parts" />
         </a>
         <nav>
-          <a href="#catalogo">Catálogo</a>
+          <a href="#catalogo">Catálogo técnico</a>
           <a href="#como-comprar">Como comprar</a>
         </nav>
       </header>
 
       <section class="hero">
         <div class="hero-copy">
-          <p class="kicker">PEÇAS PARA BYD, GWM, CHERY E JAC</p>
-          <h1>A peça certa para o seu carro chinês.</h1>
+          <p class="kicker">REPOSIÇÃO PARA OFICINAS E PROFISSIONAIS DA REPARAÇÃO</p>
+          <h1>A peça certa para a sua oficina.</h1>
           <p class="hero-text">
-            Busque pelo nome ou código da peça. Informe marca, modelo e ano — nossa equipe confirma
-            a aplicação e a disponibilidade antes do pedido.
+            Peças para veículos chineses organizadas por SKU, código OEM e aplicação. Consulte
+            fotos, referências e disponibilidade do anúncio antes de fechar o pedido.
           </p>
+          <p class="audience-note">Oficinas · mecânicos · auto centers · lojas de autopeças</p>
           <div class="hero-actions">
-            <a class="button button-red" href="#catalogo">Encontrar uma peça</a>
+            <a class="button button-red" href="#catalogo">Buscar peça para oficina</a>
           </div>
         </div>
       </section>
@@ -36,25 +37,25 @@ import { CatalogProduct } from '../core/models';
       <section class="catalog-section" id="catalogo">
         <div class="section-head">
           <div>
-            <p class="kicker">CATÁLOGO DE PEÇAS</p>
-            <h2>Busque por nome, código ou aplicação.</h2>
+            <p class="kicker">CATÁLOGO TÉCNICO</p>
+            <h2>Encontre a peça pelo código ou pela aplicação.</h2>
           </div>
           <p class="section-note">
-            Disponibilidade atualizada conforme os anúncios. Antes de comprar, confirme aplicação,
-            marca, modelo e ano com a equipe.
+            Comece pelo SKU, código OEM ou dados do veículo. Confirme versão, motor e ano antes do
+            pedido.
           </p>
         </div>
         <div class="search-row">
           <label class="search-box">
-            <span>O que você procura?</span>
+            <span>Peça, código ou veículo</span>
             <input
               [ngModel]="search"
               (ngModelChange)="onSearch($event)"
               (keyup.enter)="load()"
-              placeholder="Ex.: filtro de óleo, Tiggo 7, LR174890"
+              placeholder="Ex.: LR174890, 0280157176 ou Tiggo 7 1.5"
             />
           </label>
-          <button class="button button-dark" (click)="load()">Buscar peças</button>
+          <button class="button button-dark" (click)="load()">Buscar no catálogo</button>
         </div>
         @if (loading()) {
           <div class="catalog-state">Atualizando o catálogo...</div>
@@ -66,10 +67,7 @@ import { CatalogProduct } from '../core/models';
         } @else if (!products().length) {
           <div class="catalog-state">
             <strong>Nenhuma peça encontrada.</strong
-            ><span
-              >Tente outro nome, SKU, marca ou modelo. Se preferir, nossa equipe encontra a peça com
-              você.</span
-            >
+            ><span>Revise o SKU, código OEM, modelo, ano e motorização do veículo.</span>
           </div>
         } @else {
           <div class="product-grid">
@@ -121,7 +119,7 @@ import { CatalogProduct } from '../core/models';
                           placement: 'product_card',
                         })
                       "
-                      >Ver anúncio no Mercado Livre ↗</a
+                      >Ver oferta no Mercado Livre ↗</a
                     >
                   }
                 </div>
@@ -161,7 +159,7 @@ import { CatalogProduct } from '../core/models';
             <p class="modal-description">
               {{
                 product.description ||
-                  'Fale com a equipe para confirmar aplicação, compatibilidade e disponibilidade antes de fechar o pedido.'
+                  'Confira fotos, código OEM, aplicação e disponibilidade antes de fechar o pedido.'
               }}
             </p>
             @if (product.images?.length) {
@@ -235,7 +233,7 @@ import { CatalogProduct } from '../core/models';
                     }}</span
                   >
                 }
-                <small>Confirme a aplicação com nossa equipe antes de comprar.</small>
+                <small>Confirme versão e motorização antes de comprar.</small>
               </div>
             }
             @for (listing of product.listings; track listing.external_item_id) {
@@ -292,17 +290,14 @@ import { CatalogProduct } from '../core/models';
                             placement: 'product_detail',
                           })
                         "
-                        >Abrir anúncio no Mercado Livre ↗</a
+                        >Ver oferta no Mercado Livre ↗</a
                       >
                     }
                   </div>
                 </div>
               </article>
             } @empty {
-              <div class="catalog-state">
-                Este produto ainda não possui um anúncio vinculado. Fale com a equipe para consultar
-                alternativas.
-              </div>
+              <div class="catalog-state">Este produto ainda não possui um anúncio vinculado.</div>
             }
           </section>
         </div>
@@ -310,13 +305,13 @@ import { CatalogProduct } from '../core/models';
 
       <section class="how-section" id="como-comprar">
         <div>
-          <p class="kicker">COMO COMPRAR</p>
-          <h2>Uma conversa objetiva. A peça certa para o seu carro.</h2>
+          <p class="kicker">FLUXO DE COMPRA</p>
+          <h2>Informação técnica antes do pedido.</h2>
         </div>
         <div class="steps">
-          <div><b>01</b><span>Encontre a peça pelo nome, SKU ou anúncio.</span></div>
-          <div><b>02</b><span>Envie marca, modelo e ano do veículo.</span></div>
-          <div><b>03</b><span>Receba confirmação de aplicação e disponibilidade.</span></div>
+          <div><b>01</b><span>Localize a peça por SKU, código OEM ou aplicação.</span></div>
+          <div><b>02</b><span>Compare fotos, referências e especificações do anúncio.</span></div>
+          <div><b>03</b><span>Confirme versão, motor e ano antes de concluir.</span></div>
         </div>
       </section>
 
@@ -324,7 +319,7 @@ import { CatalogProduct } from '../core/models';
         <div class="brand footer-brand">
           <img src="/brand/goes-wordmark.png" alt="Goes Auto Parts" />
         </div>
-        <p>Peças para veículos chineses, com orientação de verdade.</p>
+        <p>Reposição para veículos chineses, com foco em oficinas e profissionais da reparação.</p>
       </footer>
     </main>
   `,
