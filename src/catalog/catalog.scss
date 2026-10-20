@@ -433,7 +433,7 @@ h2 {
   margin: 10px 0;
   font-size: 13px;
 }
-.fitment-deck {
+.fitment-browser {
   min-width: 0;
   margin: 10px 0 12px;
   padding-top: 10px;
@@ -456,132 +456,180 @@ h2 {
   font-size: 14px;
 }
 .fitment-deck-head > span {
-  padding: 4px 7px;
-  border-radius: 999px;
-  background: #e3f1eb;
   color: #087a60;
   font-size: 9px;
   font-weight: 800;
   white-space: nowrap;
 }
-.fitment-rail {
+.fitment-search {
   display: flex;
-  gap: 8px;
-  overflow-x: auto;
-  padding: 2px 2px 6px;
-  scroll-snap-type: x mandatory;
-  scrollbar-width: thin;
+  min-height: 34px;
+  align-items: center;
+  gap: 7px;
+  margin: 7px 0;
+  padding: 0 10px;
+  border: 1px solid #d8e0dc;
+  border-radius: 10px;
+  background: #f8faf9;
+  color: #6d7a74;
 }
-.fitment-card {
-  position: relative;
-  flex: 0 0 176px;
-  min-height: 160px;
+.fitment-search input {
+  min-width: 0;
+  flex: 1;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #090a0d;
+  font: inherit;
+  font-size: 12px;
+}
+.fitment-search:focus-within {
+  border-color: #087a60;
+  outline: 2px solid #087a6024;
+}
+.fitment-list {
+  display: grid;
+  gap: 6px;
+}
+.fitment-row {
   overflow: hidden;
-  padding: 11px;
-  border-radius: 14px;
-  background:
-    radial-gradient(circle at 105% -5%, #ffffff24 0 42px, transparent 43px),
-    linear-gradient(145deg, #0d3d31, #09231d);
-  color: #fff;
-  box-shadow: 0 8px 20px #06251d26;
-  scroll-snap-align: start;
+  border: 1px solid #e3e9e6;
+  border-radius: 11px;
+  background: #fff;
+  transition:
+    border-color 0.15s,
+    background 0.15s;
 }
-.fitment-card::after {
-  content: '✓';
-  position: absolute;
-  right: -8px;
-  bottom: -22px;
-  color: #ffffff0b;
-  font-size: 92px;
-  font-weight: 900;
-  line-height: 1;
+.fitment-row.open {
+  border-color: #a9cbbd;
+  background: #f8fbf9;
 }
-.fitment-card:nth-child(3n + 2) {
-  background:
-    radial-gradient(circle at 105% -5%, #ffffff24 0 42px, transparent 43px),
-    linear-gradient(145deg, #16473b, #0a2a23);
-}
-.fitment-card:nth-child(3n) {
-  background:
-    radial-gradient(circle at 105% -5%, #ffffff24 0 42px, transparent 43px),
-    linear-gradient(145deg, #263d35, #14251f);
-}
-.fitment-card-top {
-  position: relative;
-  z-index: 1;
+.fitment-row-main {
   display: flex;
-  justify-content: space-between;
+  align-items: center;
   gap: 8px;
-  color: #bfe0d4;
+  min-height: 52px;
+  padding: 7px 8px 7px 10px;
+}
+.fitment-identity {
+  display: grid;
+  min-width: 0;
+  flex: 1;
+  grid-template-columns: auto 1fr;
+  column-gap: 7px;
+  align-items: baseline;
+}
+.fitment-identity > span {
+  grid-row: 1 / span 2;
+  align-self: center;
+  padding: 3px 6px;
+  border-radius: 999px;
+  background: #e3f1eb;
+  color: #087a60;
   font-size: 8px;
   font-weight: 800;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
 }
-.fitment-card-top small {
-  color: #ffffff80;
-  font-size: 7px;
-}
-.fitment-card > strong {
-  position: relative;
-  z-index: 1;
-  display: block;
-  min-height: 42px;
-  margin: 8px 0 4px;
-  font-size: 20px;
-  line-height: 1.05;
-  letter-spacing: -0.03em;
-  text-transform: uppercase;
-}
-.fitment-years {
-  position: relative;
-  z-index: 1;
-  display: inline-flex;
-  padding: 3px 7px;
-  border: 1px solid #ffffff33;
-  border-radius: 999px;
-  color: #fff;
-  font-size: 10px;
-}
-.fitment-card dl {
-  position: relative;
-  z-index: 1;
-  display: grid;
-  grid-template-columns: 0.8fr 1.2fr;
-  gap: 6px;
-  margin: 9px 0 7px;
-}
-.fitment-card dl div {
-  min-width: 0;
-}
-.fitment-card dt {
-  color: #9dc4b6;
-  font-size: 7px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-.fitment-card dd {
+.fitment-identity strong {
   overflow: hidden;
-  margin: 2px 0 0;
-  color: #fff;
-  font-size: 9px;
-  line-height: 1.25;
+  color: #090a0d;
+  font-size: 13px;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.fitment-card footer {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  justify-content: space-between;
-  gap: 7px;
-  padding-top: 7px;
-  border-top: 1px solid #ffffff24;
-  color: #b7d5ca;
-  font-size: 8px;
+.fitment-identity small {
+  overflow: hidden;
+  color: #6d7a74;
+  font-size: 9px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
-.fitment-card footer b {
-  color: #b8f398;
+.fitment-count {
+  display: grid;
+  min-width: 25px;
+  height: 25px;
+  place-items: center;
+  border-radius: 999px;
+  background: #f1f5f3;
+  color: #52615b;
+  font-size: 9px;
+}
+.fitment-toggle {
+  display: grid;
+  flex: 0 0 26px;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  place-items: center;
+  border: 1px solid #d8e0dc;
+  border-radius: 8px;
+  background: #fff;
+  color: #087a60;
+  font-size: 17px;
+  line-height: 1;
+  cursor: pointer;
+}
+.fitment-detail {
+  display: grid;
+  grid-template-columns: 0.7fr 0.8fr 1.5fr;
+  gap: 10px;
+  padding: 9px 10px 11px;
+  border-top: 1px solid #e3e9e6;
+  background: #f8fbf9;
+}
+.fitment-detail > div {
+  display: grid;
+  align-content: start;
+  gap: 4px;
+  min-width: 0;
+}
+.fitment-detail small {
+  color: #6d7a74;
+  font-size: 8px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.fitment-detail > div > span {
+  color: #090a0d;
+  font-size: 10px;
+}
+.fitment-versions {
+  display: flex !important;
+  flex-wrap: wrap;
+  gap: 4px !important;
+}
+.fitment-versions small {
+  flex-basis: 100%;
+}
+.fitment-versions span {
+  padding: 3px 6px;
+  border-radius: 999px;
+  background: #e3f1eb;
+  color: #087a60 !important;
+  font-size: 8px !important;
+  line-height: 1.2;
+}
+.fitment-more {
+  width: 100%;
+  min-height: 30px;
+  margin-top: 6px;
+  border: 1px solid #d8e0dc;
+  border-radius: 9px;
+  background: #fff;
+  color: #087a60;
+  font: inherit;
+  font-size: 9px;
+  font-weight: 800;
+  cursor: pointer;
+}
+.fitment-empty {
+  padding: 12px;
+  border: 1px dashed #d8e0dc;
+  border-radius: 10px;
+  color: #6d7a74;
+  font-size: 10px;
+  text-align: center;
 }
 .gallery-stage {
   position: relative;
@@ -957,6 +1005,12 @@ h2 {
   }
   .catalog-facts {
     gap: 6px;
+  }
+  .fitment-detail {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .fitment-versions {
+    grid-column: 1 / -1;
   }
 }
 

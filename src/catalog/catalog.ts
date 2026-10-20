@@ -234,40 +234,87 @@ interface FitmentCard {
                   }}
                 </p>
                 @if (fitmentCards().length) {
-                  <section class="fitment-deck" aria-label="Aplicações compatíveis">
+                  <section class="fitment-browser" aria-label="Aplicações compatíveis">
                     <div class="fitment-deck-head">
                       <div>
                         <p class="kicker">APLICAÇÕES</p>
-                        <h3>Compatibilidade veicular</h3>
+                        <h3>Veículos compatíveis</h3>
                       </div>
-                      <span>{{ product.fitments?.length }} versões</span>
+                      <span
+                        >{{ fitmentCards().length }} modelos ·
+                        {{ product.fitments?.length }} versões</span
+                      >
                     </div>
-                    <div class="fitment-rail">
-                      @for (card of fitmentCards(); track card.key) {
-                        <article class="fitment-card">
-                          <div class="fitment-card-top">
-                            <span>{{ card.make }}</span>
-                            <small>APLICAÇÃO</small>
+                    <label class="fitment-search">
+                      <span aria-hidden="true">⌕</span>
+                      <input
+                        [ngModel]="fitmentQuery()"
+                        (ngModelChange)="setFitmentQuery($event)"
+                        placeholder="Buscar modelo ou motor"
+                        aria-label="Buscar modelo ou motor compatível"
+                      />
+                    </label>
+                    <div class="fitment-list">
+                      @for (card of visibleFitmentCards(); track card.key) {
+                        <article class="fitment-row" [class.open]="expandedFitment() === card.key">
+                          <div class="fitment-row-main">
+                            <div class="fitment-identity">
+                              <span>{{ card.make }}</span>
+                              <strong>{{ card.model }}</strong>
+                              <small>{{ card.yearLabel }} · {{ card.engines.join(' · ') }}</small>
+                            </div>
+                            <b class="fitment-count">{{ card.count }}</b>
+                            <button
+                              type="button"
+                              class="fitment-toggle"
+                              [attr.aria-expanded]="expandedFitment() === card.key"
+                              [attr.aria-label]="
+                                (expandedFitment() === card.key ? 'Recolher ' : 'Ver versões de ') +
+                                card.model
+                              "
+                              (click)="toggleFitment(card.key)"
+                            >
+                              {{ expandedFitment() === card.key ? '−' : '+' }}
+                            </button>
                           </div>
-                          <strong>{{ card.model }}</strong>
-                          <b class="fitment-years">{{ card.yearLabel }}</b>
-                          <dl>
-                            <div>
-                              <dt>Motor</dt>
-                              <dd>{{ card.engines.join(' · ') || 'Consulte' }}</dd>
+                          @if (expandedFitment() === card.key) {
+                            <div class="fitment-detail">
+                              <div>
+                                <small>Anos</small>
+                                <span>{{ card.yearLabel }}</span>
+                              </div>
+                              <div>
+                                <small>Motores</small>
+                                <span>{{ card.engines.join(' · ') || 'Consulte' }}</span>
+                              </div>
+                              <div class="fitment-versions">
+                                <small>Versões compatíveis</small>
+                                @for (version of card.versions; track version) {
+                                  <span>{{ version }}</span>
+                                }
+                              </div>
                             </div>
-                            <div>
-                              <dt>Versão</dt>
-                              <dd>{{ card.versions[0] || 'Compatível' }}</dd>
-                            </div>
-                          </dl>
-                          <footer>
-                            <span>{{ card.count }} aplicações</span>
-                            <b>✓ Compatível</b>
-                          </footer>
+                          }
                         </article>
+                      } @empty {
+                        <div class="fitment-empty">
+                          Nenhum modelo encontrado. Tente apenas a marca ou o motor.
+                        </div>
                       }
                     </div>
+                    @if (!fitmentQuery() && fitmentCards().length > 4) {
+                      <button
+                        type="button"
+                        class="fitment-more"
+                        (click)="showAllFitments.set(!showAllFitments())"
+                      >
+                        {{
+                          showAllFitments()
+                            ? 'Mostrar menos modelos'
+                            : 'Ver todos os ' + fitmentCards().length + ' modelos'
+                        }}
+                      </button>
+                    }
                   </section>
                 }
                 @if (product.manufacturer_part_number || product.fitments?.length) {
@@ -372,7 +419,22 @@ export class CatalogPage implements OnInit {
   readonly error = signal(false);
   readonly selected = signal<CatalogProduct | null>(null);
   readonly photoIndex = signal(0);
+  readonly fitmentQuery = signal('');
+  readonly expandedFitment = signal<string | null>(null);
+  readonly showAllFitments = signal(false);
   readonly fitmentCards = computed(() => this.groupFitments(this.selected()?.fitments ?? []));
+  readonly visibleFitmentCards = computed(() => {
+    const query = this.fitmentQuery().trim().toLocaleLowerCase('pt-BR');
+    const cards = query
+      ? this.fitmentCards().filter((card) =>
+          [card.make, card.model, card.yearLabel, ...card.engines, ...card.versions]
+            .join(' ')
+            .toLocaleLowerCase('pt-BR')
+            .includes(query),
+        )
+      : this.fitmentCards();
+    return query || this.showAllFitments() ? cards : cards.slice(0, 4);
+  });
   search = '';
   private searchTimer?: ReturnType<typeof setTimeout>;
   private lastTrackedSearch = '';
@@ -445,6 +507,15 @@ export class CatalogPage implements OnInit {
   onPhotoScroll(viewport: HTMLElement) {
     if (!viewport.clientWidth) return;
     this.photoIndex.set(Math.round(viewport.scrollLeft / viewport.clientWidth));
+  }
+
+  setFitmentQuery(value: string) {
+    this.fitmentQuery.set(value);
+    this.expandedFitment.set(null);
+  }
+
+  toggleFitment(key: string) {
+    this.expandedFitment.update((current) => (current === key ? null : key));
   }
 
   private groupFitments(fitments: CatalogFitment[]): FitmentCard[] {
