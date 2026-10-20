@@ -1,5 +1,14 @@
 # Notas de versão
 
+## 20/10/2026 — modal do produto redesenhado
+
+- O modal virou um cartão compacto com galeria à esquerda e ficha técnica à direita no desktop, mantendo uma coluna no celular.
+- A foto principal ficou limitada a um palco de 270 px, e as miniaturas foram reduzidas para 46 px.
+- As especificações longas do anúncio agora ficam recolhidas e rolam dentro do painel sem alongar o modal.
+- Bordas, botões, contador, setas e cartões foram arredondados e ajustados para 320 px, 390 px e telas maiores.
+
+Versão publicada: [fdbb867](https://github.com/felgoes/goesautoparts-site/commit/fdbb867).
+
 ## 20/10/2026 — galeria do modal responsiva
 
 - As fotos deixaram de ser ampliadas para preencher todo o modal e agora respeitam o tamanho e a proporção originais.
