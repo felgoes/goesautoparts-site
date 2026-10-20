@@ -1,5 +1,13 @@
 # Notas de versão
 
+## 20/10/2026 — catálogo com foco em oficinas
+
+- O posicionamento passou de loja para consumidor final para um catálogo de reposição voltado a oficinas, mecânicos, auto centers e lojas de autopeças.
+- A busca agora destaca SKU, código OEM e aplicação; o fluxo de compra orienta a conferir versão, motor e ano antes do pedido.
+- Os anúncios do Mercado Livre continuam sendo o canal de oferta e compra.
+
+Versão publicada: [630465d](https://github.com/felgoes/goesautoparts-site/commit/630465d).
+
 ## 20/10/2026 — catálogo sem chamadas de contato
 
 - Os botões e links “Falar com especialista” foram removidos do cabeçalho, da abertura, dos produtos, dos detalhes e do rodapé.
