@@ -182,6 +182,59 @@ import { CatalogProduct } from '../core/models';
                   'Fale com a equipe para confirmar aplicação, compatibilidade e disponibilidade antes de fechar o pedido.'
               }}
             </p>
+            @if (product.images?.length) {
+              <section class="catalog-gallery" aria-label="Fotos da peça">
+                <div class="gallery-stage">
+                  <div
+                    #galleryViewport
+                    class="gallery-viewport"
+                    (scroll)="onPhotoScroll(galleryViewport)"
+                  >
+                    @for (image of product.images; track image.url) {
+                      <figure class="gallery-slide">
+                        <img [src]="image.url" [alt]="product.name" loading="eager" />
+                      </figure>
+                    }
+                  </div>
+                  @if ((product.images?.length ?? 0) > 1) {
+                    <button
+                      type="button"
+                      class="gallery-arrow previous"
+                      aria-label="Foto anterior"
+                      (click)="movePhoto(galleryViewport, -1)"
+                    >
+                      ‹
+                    </button>
+                    <button
+                      type="button"
+                      class="gallery-arrow next"
+                      aria-label="Próxima foto"
+                      (click)="movePhoto(galleryViewport, 1)"
+                    >
+                      ›
+                    </button>
+                  }
+                </div>
+                @if ((product.images?.length ?? 0) > 1) {
+                  <div class="gallery-meta">
+                    <span>{{ photoIndex() + 1 }} / {{ product.images?.length ?? 0 }}</span>
+                    <small>Deslize para o lado ou use as setas</small>
+                  </div>
+                  <div class="gallery-thumbs" aria-label="Selecionar foto">
+                    @for (image of product.images; track image.url; let index = $index) {
+                      <button
+                        type="button"
+                        [class.active]="photoIndex() === index"
+                        [attr.aria-label]="'Abrir foto ' + (index + 1)"
+                        (click)="goToPhoto(galleryViewport, index)"
+                      >
+                        <img [src]="image.url" [alt]="product.name" loading="lazy" />
+                      </button>
+                    }
+                  </div>
+                }
+              </section>
+            }
             @if (product.manufacturer_part_number) {
               <p class="modal-meta">
                 Código OEM: <strong>{{ product.manufacturer_part_number }}</strong>
@@ -206,8 +259,11 @@ import { CatalogProduct } from '../core/models';
             @for (listing of product.listings; track listing.external_item_id) {
               <article class="catalog-listing">
                 <div class="listing-media">
-                  @if (listing.thumbnail) {
-                    <img [src]="listing.thumbnail" [alt]="listing.title || product.name" />
+                  @if (listing.images[0] || listing.thumbnail) {
+                    <img
+                      [src]="listing.images[0] || listing.thumbnail"
+                      [alt]="listing.title || product.name"
+                    />
                   } @else {
                     <span>{{ glyph(product.name) }}</span>
                   }
@@ -316,6 +372,7 @@ export class CatalogPage implements OnInit {
   readonly loading = signal(true);
   readonly error = signal(false);
   readonly selected = signal<CatalogProduct | null>(null);
+  readonly photoIndex = signal(0);
   search = '';
   private searchTimer?: ReturnType<typeof setTimeout>;
   private lastTrackedSearch = '';
@@ -364,6 +421,7 @@ export class CatalogPage implements OnInit {
   openProduct(product: CatalogProduct) {
     this.previousFocus =
       document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    this.photoIndex.set(0);
     this.selected.set(product);
     this.track('product_view', { sku: product.sku });
     setTimeout(() => document.querySelector<HTMLButtonElement>('.catalog-modal-close')?.focus());
@@ -374,6 +432,31 @@ export class CatalogPage implements OnInit {
     this.selected.set(null);
     this.previousFocus?.focus();
     this.previousFocus = null;
+  }
+
+  movePhoto(viewport: HTMLElement, direction: -1 | 1) {
+    viewport.scrollBy({ left: viewport.clientWidth * direction, behavior: 'smooth' });
+  }
+
+  goToPhoto(viewport: HTMLElement, index: number) {
+    viewport.scrollTo({ left: viewport.clientWidth * index, behavior: 'smooth' });
+  }
+
+  onPhotoScroll(viewport: HTMLElement) {
+    if (!viewport.clientWidth) return;
+    this.photoIndex.set(Math.round(viewport.scrollLeft / viewport.clientWidth));
+  }
+
+  @HostListener('document:keydown.arrowleft')
+  onPreviousPhoto() {
+    const viewport = document.querySelector<HTMLElement>('.gallery-viewport');
+    if (viewport) this.movePhoto(viewport, -1);
+  }
+
+  @HostListener('document:keydown.arrowright')
+  onNextPhoto() {
+    const viewport = document.querySelector<HTMLElement>('.gallery-viewport');
+    if (viewport) this.movePhoto(viewport, 1);
   }
 
   @HostListener('document:keydown.escape')
