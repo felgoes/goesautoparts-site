@@ -1,5 +1,14 @@
 # Notas de versão
 
+## 20/10/2026 — modal compacto do produto
+
+- O modal foi reduzido para 760 px de largura e até 460 px de altura, com galeria de 320 px e foto limitada a 170 px.
+- As miniaturas foram reduzidas para 30 px e o card do anúncio deixou de duplicar título e imagem.
+- Preço, estoque, especificações recolhíveis e link do Mercado Livre ficaram em um bloco compacto.
+- O layout foi validado com o produto real em desktop, 390 px e 320 px.
+
+Versão publicada: [16906ef](https://github.com/felgoes/goesautoparts-site/commit/16906ef).
+
 ## 20/10/2026 — modal do produto redesenhado
 
 - O modal virou um cartão compacto com galeria à esquerda e ficha técnica à direita no desktop, mantendo uma coluna no celular.
