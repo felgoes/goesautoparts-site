@@ -55,11 +55,6 @@
 .catalog-header nav a:hover {
   color: #fff;
 }
-.header-cta {
-  border: 1px solid #e51b35;
-  color: #fff !important;
-  padding: 12px 15px;
-}
 
 .hero {
   min-height: 590px;
@@ -610,7 +605,7 @@ h2 {
   .catalog-footer {
     width: min(100% - 30px, 600px);
   }
-  .catalog-header nav a:not(.header-cta) {
+  .catalog-header nav {
     display: none;
   }
   .hero {

@@ -16,12 +16,6 @@ import { CatalogProduct } from '../core/models';
         <nav>
           <a href="#catalogo">Catálogo</a>
           <a href="#como-comprar">Como comprar</a>
-          <a
-            class="header-cta"
-            [href]="whatsappUrl()"
-            (click)="track('whatsapp_click', { placement: 'header' })"
-            >Falar com especialista</a
-          >
         </nav>
       </header>
 
@@ -35,12 +29,6 @@ import { CatalogProduct } from '../core/models';
           </p>
           <div class="hero-actions">
             <a class="button button-red" href="#catalogo">Encontrar uma peça</a>
-            <a
-              class="button button-quiet"
-              [href]="whatsappUrl()"
-              (click)="track('whatsapp_click', { placement: 'hero' })"
-              >Falar com especialista</a
-            >
           </div>
         </div>
       </section>
@@ -73,7 +61,7 @@ import { CatalogProduct } from '../core/models';
         } @else if (error()) {
           <div class="catalog-state error">
             <strong>Não conseguimos carregar o catálogo.</strong
-            ><span>Tente novamente em instantes ou fale com a equipe pelo WhatsApp.</span>
+            ><span>Tente novamente em instantes.</span>
           </div>
         } @else if (!products().length) {
           <div class="catalog-state">
@@ -81,7 +69,7 @@ import { CatalogProduct } from '../core/models';
             ><span
               >Tente outro nome, SKU, marca ou modelo. Se preferir, nossa equipe encontra a peça com
               você.</span
-            ><a class="button button-quiet" [href]="whatsappUrl()">Pedir ajuda no WhatsApp</a>
+            >
           </div>
         } @else {
           <div class="product-grid">
@@ -136,12 +124,6 @@ import { CatalogProduct } from '../core/models';
                       >Ver anúncio no Mercado Livre ↗</a
                     >
                   }
-                  <a
-                    class="product-link"
-                    [href]="whatsappUrl(product)"
-                    (click)="$event.stopPropagation()"
-                    >Falar com especialista sobre esta peça</a
-                  >
                 </div>
               </article>
             }
@@ -298,14 +280,6 @@ import { CatalogProduct } from '../core/models';
                     </div>
                   }
                   <div class="listing-actions">
-                    <a
-                      class="button button-red"
-                      [href]="whatsappUrl(product)"
-                      (click)="
-                        track('whatsapp_click', { sku: product.sku, placement: 'product_detail' })
-                      "
-                      >Tenho interesse nesta peça</a
-                    >
                     @if (listing.permalink) {
                       <a
                         class="button button-quiet listing-external"
@@ -327,14 +301,7 @@ import { CatalogProduct } from '../core/models';
             } @empty {
               <div class="catalog-state">
                 Este produto ainda não possui um anúncio vinculado. Fale com a equipe para consultar
-                alternativas.<a
-                  class="button button-red"
-                  [href]="whatsappUrl(product)"
-                  (click)="
-                    track('whatsapp_click', { sku: product.sku, placement: 'product_detail' })
-                  "
-                  >Consultar esta peça</a
-                >
+                alternativas.
               </div>
             }
           </section>
@@ -358,9 +325,6 @@ import { CatalogProduct } from '../core/models';
           <img src="/brand/goes-wordmark.png" alt="Goes Auto Parts" />
         </div>
         <p>Peças para veículos chineses, com orientação de verdade.</p>
-        <a [href]="whatsappUrl()" (click)="track('whatsapp_click', { placement: 'footer' })"
-          >Falar com a equipe</a
-        >
       </footer>
     </main>
   `,
@@ -493,12 +457,5 @@ export class CatalogPage implements OnInit {
       body: JSON.stringify({ name, source: 'site', anonymous_id: anonymousId, properties }),
       keepalive: true,
     }).catch(() => undefined);
-  }
-
-  whatsappUrl(product?: CatalogProduct) {
-    const text = product
-      ? `Olá! Tenho interesse na peça ${product.name} (SKU ${product.sku}). Pode confirmar a aplicação para o meu veículo?`
-      : 'Olá! Preciso de ajuda para encontrar uma peça para o meu veículo.';
-    return `https://wa.me/?text=${encodeURIComponent(text)}`;
   }
 }

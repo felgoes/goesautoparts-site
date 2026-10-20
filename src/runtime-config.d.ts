@@ -1,6 +1,5 @@
 interface GoesSiteConfig {
   apiBase?: string;
-  whatsappNumber?: string;
 }
 
 interface Window {
