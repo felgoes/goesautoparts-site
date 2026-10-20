@@ -1,5 +1,13 @@
 # Notas de versão
 
+## 20/10/2026 — galeria completa no catálogo
+
+- Produtos com anúncios agora exibem todas as fotos do Mercado Livre em um carrossel lateral.
+- A imagem principal usa a URL original do anúncio, em vez da miniatura de baixa resolução.
+- Setas, miniaturas e gesto lateral funcionam no desktop e no celular.
+
+Versão publicada: [dafdc21](https://github.com/felgoes/goesautoparts-site/commit/dafdc21).
+
 ## 18/10/2026 — Identidade visual Goes Auto Parts
 
 - Catálogo atualizado com a identidade visual da marca e layout adaptado para celulares.
