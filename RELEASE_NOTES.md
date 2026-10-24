@@ -1,5 +1,12 @@
 # Notas de versão
 
+## 24/10/2026 — catálogo mais direto e legível
+
+- Os cartões deixaram de exibir a descrição comercial completa; nome, aplicação resumida, preço, disponibilidade e o atalho “Ver ficha técnica” continuam visíveis.
+- A descrição completa e todas as compatibilidades veiculares permanecem na ficha ao abrir o produto.
+
+Versão publicada: [37e809d](https://github.com/felgoes/goesautoparts-site/commit/37e809da75cc0bdb82893be9eb8334639e00a705).
+
 ## 20/10/2026 — rolagem e busca instantânea nas aplicações
 
 - O modal inteiro agora responde à rolagem, inclusive quando o cursor está sobre a galeria.
