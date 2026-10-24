@@ -107,15 +107,13 @@ interface FitmentCard {
                   @if (product.fitments?.[0]; as fitment) {
                     <p class="product-meta">Aplicação: {{ fitment.make }} {{ fitment.model }}</p>
                   }
-                  @if (product.description) {
-                    <p>{{ product.description }}</p>
-                  }
                   <div class="product-foot">
                     <strong>{{ product.sale_price | currency: 'BRL' }}</strong>
                     <span [class.out]="!product.in_stock">
                       {{ product.in_stock ? 'Disponível' : 'Consulte disponibilidade' }}
                     </span>
                   </div>
+                  <span class="product-cta">Ver ficha técnica →</span>
                   @if (product.listings[0]?.permalink) {
                     <a
                       class="product-link product-marketplace-link"
