@@ -6,8 +6,8 @@ export interface CatalogListing {
   thumbnail: string | null;
   images: string[];
   marketplace_price: number | null;
-  available_quantity: number | null;
-  sold_quantity: number | null;
+  available_quantity: number | string | null;
+  sold_quantity: number | string | null;
   visits: number | null;
   status: string | null;
   attributes: { name: string; value: string }[];

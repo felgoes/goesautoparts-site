@@ -3,6 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, HostListener, OnInit, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CatalogFitment, CatalogProduct } from '../core/models';
+import { formatQuantity } from './quantity';
 
 interface FitmentCard {
   key: string;
@@ -341,7 +342,7 @@ interface FitmentCard {
                     </div>
                     <p class="offer-stock">
                       Estoque no anúncio
-                      <b>{{ listing.available_quantity ?? '—' }}</b>
+                      <b>{{ formatQuantity(listing.available_quantity) }}</b>
                     </p>
                     @if (listing.attributes.length) {
                       <details class="listing-specs">
@@ -420,6 +421,7 @@ export class CatalogPage implements OnInit {
   readonly fitmentQuery = signal('');
   readonly expandedFitment = signal<string | null>(null);
   readonly showAllFitments = signal(false);
+  readonly formatQuantity = formatQuantity;
   readonly fitmentCards = computed(() => this.groupFitments(this.selected()?.fitments ?? []));
   readonly visibleFitmentCards = computed(() => {
     const query = this.fitmentQuery().trim().toLocaleLowerCase('pt-BR');
