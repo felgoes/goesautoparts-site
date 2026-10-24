@@ -1,5 +1,12 @@
 # Notas de versão
 
+## 24/10/2026 — quantidades no padrão brasileiro
+
+- O estoque dos anúncios deixou de mostrar zeros decimais desnecessários: `7.000` agora aparece como `7`.
+- Quantidades fracionadas continuam permitidas, com até três casas e formatação brasileira.
+
+Versão publicada: [cfb379c](https://github.com/felgoes/goesautoparts-site/commit/cfb379c2f22f787eefc4d5ac62a1abf7188565c3).
+
 ## 24/10/2026 — catálogo mais direto e legível
 
 - Os cartões deixaram de exibir a descrição comercial completa; nome, aplicação resumida, preço, disponibilidade e o atalho “Ver ficha técnica” continuam visíveis.
