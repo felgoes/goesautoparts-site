@@ -1,5 +1,12 @@
 # Notas de versão
 
+## 29/10/2026 — atendimento pelo WhatsApp
+
+- O telefone de atendimento aparece no rodapé e os botões do site abrem uma conversa com a equipe.
+- Cada anúncio identifica a peça e a oferta na mensagem; o texto geral usa um tom cordial e profissional.
+
+Versão publicada: [4291fe6](https://github.com/felgoes/goesautoparts-site/commit/4291fe66b941a9d4d00bb2deed6a774b9dcf230c).
+
 ## 24/10/2026 — quantidades no padrão brasileiro
 
 - O estoque dos anúncios deixou de mostrar zeros decimais desnecessários: `7.000` agora aparece como `7`.
