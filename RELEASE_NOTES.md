@@ -1,5 +1,12 @@
 # Notas de versão
 
+## 29/10/2026 — botão superior do WhatsApp e favicon verde
+
+- O atalho superior de atendimento ganhou ícone, fundo verde, estados de interação e foco visível; ele continua no cabeçalho em telas móveis.
+- O favicon agora usa o G Goes com o acento verde da identidade atual.
+
+Versão publicada: [c4dcc94](https://github.com/felgoes/goesautoparts-site/commit/c4dcc9425017ff0433a851af531cae52cdcd3777).
+
 ## 29/10/2026 — atendimento pelo WhatsApp
 
 - O telefone de atendimento aparece no rodapé e os botões do site abrem uma conversa com a equipe.
