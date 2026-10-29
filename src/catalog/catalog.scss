@@ -55,6 +55,48 @@
 .catalog-header nav a:hover {
   color: #fff;
 }
+.catalog-header .header-cta {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 46px;
+  padding: 0 18px;
+  border: 1px solid #087a60;
+  border-radius: 999px;
+  background: #087a60;
+  box-shadow: 0 6px 18px rgb(8 122 96 / 22%);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1;
+  text-decoration: none;
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease;
+}
+.catalog-header .header-cta svg {
+  width: 19px;
+  height: 19px;
+}
+.catalog-header .header-cta:hover {
+  transform: translateY(-1px);
+  border-color: #096b54;
+  background: #096b54;
+  box-shadow: 0 9px 22px rgb(8 122 96 / 30%);
+  color: #fff;
+}
+.catalog-header .header-cta:active {
+  transform: translateY(0);
+  box-shadow: 0 3px 10px rgb(8 122 96 / 24%);
+}
+.catalog-header .header-cta:focus-visible {
+  outline: 3px solid #9be25b;
+  outline-offset: 3px;
+}
 
 .hero {
   min-height: 590px;
@@ -916,6 +958,16 @@ h2 {
   }
   .catalog-header nav {
     display: none;
+  }
+  .catalog-header .header-cta {
+    min-height: 42px;
+    gap: 6px;
+    padding: 0 12px;
+    font-size: 12px;
+  }
+  .catalog-header .header-cta svg {
+    width: 17px;
+    height: 17px;
   }
   .hero {
     min-height: auto;

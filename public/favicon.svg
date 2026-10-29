@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <filter id="goes-green" color-interpolation-filters="sRGB">
+      <feColorMatrix type="hueRotate" values="174" />
+    </filter>
+  </defs>
+  <image href="/brand/goes-mark.png" width="64" height="64" filter="url(#goes-green)" />
+</svg>

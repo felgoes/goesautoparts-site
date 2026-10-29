@@ -27,13 +27,28 @@ interface FitmentCard {
         <nav>
           <a href="#catalogo">Catálogo técnico</a>
           <a href="#como-comprar">Como comprar</a>
-          <a
-            class="header-cta"
-            [href]="whatsappUrl()"
-            (click)="track('whatsapp_click', { placement: 'header' })"
-            >Falar com especialista</a
-          >
         </nav>
+        <a
+          class="header-cta"
+          [href]="whatsappUrl()"
+          (click)="track('whatsapp_click', { placement: 'header' })"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path
+              d="M20.5 11.8a8.4 8.4 0 0 1-12.4 7.4L3 20.5l1.3-4.9a8.4 8.4 0 1 1 16.2-3.8Z"
+              fill="none"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.8"
+            />
+            <path
+              d="M8.5 8.2c.3-.5.6-.5.9-.5h.5c.2 0 .4.1.5.4l.8 1.9c.1.2 0 .4-.1.6l-.6.7c-.2.2-.2.4-.1.6.6 1 1.4 1.8 2.5 2.4.2.1.4.1.6-.1l.8-.9c.2-.2.4-.2.6-.1l1.8.9c.3.1.4.3.4.5 0 .4-.2 1.1-.7 1.4-.5.4-1.2.6-2 .4-1-.2-2.1-.7-3.2-1.5-1.6-1.1-2.7-2.5-3.2-3.7-.5-1.1-.3-2.2.1-2.8Z"
+              fill="currentColor"
+            />
+          </svg>
+          <span>Falar no WhatsApp</span>
+        </a>
       </header>
 
       <section class="hero">
