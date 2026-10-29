@@ -27,6 +27,12 @@ interface FitmentCard {
         <nav>
           <a href="#catalogo">Catálogo técnico</a>
           <a href="#como-comprar">Como comprar</a>
+          <a
+            class="header-cta"
+            [href]="whatsappUrl()"
+            (click)="track('whatsapp_click', { placement: 'header' })"
+            >Falar com especialista</a
+          >
         </nav>
       </header>
 
@@ -41,6 +47,12 @@ interface FitmentCard {
           <p class="audience-note">Oficinas · mecânicos · auto centers · lojas de autopeças</p>
           <div class="hero-actions">
             <a class="button button-red" href="#catalogo">Buscar peça para oficina</a>
+            <a
+              class="button button-quiet"
+              [href]="whatsappUrl()"
+              (click)="track('whatsapp_click', { placement: 'hero' })"
+              >Falar com especialista</a
+            >
           </div>
         </div>
       </section>
@@ -74,11 +86,23 @@ interface FitmentCard {
           <div class="catalog-state error">
             <strong>Não conseguimos carregar o catálogo.</strong
             ><span>Tente novamente em instantes.</span>
+            <a
+              class="button button-quiet"
+              [href]="whatsappUrl()"
+              (click)="track('whatsapp_click', { placement: 'catalog_error' })"
+              >Falar com a equipe</a
+            >
           </div>
         } @else if (!products().length) {
           <div class="catalog-state">
             <strong>Nenhuma peça encontrada.</strong
             ><span>Revise o SKU, código OEM, modelo, ano e motorização do veículo.</span>
+            <a
+              class="button button-quiet"
+              [href]="whatsappUrl()"
+              (click)="track('whatsapp_click', { placement: 'catalog_empty' })"
+              >Consultar a equipe</a
+            >
           </div>
         } @else {
           <div class="product-grid">
@@ -115,6 +139,15 @@ interface FitmentCard {
                     </span>
                   </div>
                   <span class="product-cta">Ver ficha técnica →</span>
+                  <a
+                    class="product-link whatsapp-product-link"
+                    [href]="whatsappUrl(product)"
+                    (click)="
+                      $event.stopPropagation();
+                      track('whatsapp_click', { sku: product.sku, placement: 'product_card' })
+                    "
+                    >Consultar por WhatsApp</a
+                  >
                   @if (product.listings[0]?.permalink) {
                     <a
                       class="product-link product-marketplace-link"
@@ -361,6 +394,18 @@ interface FitmentCard {
                       </details>
                     }
                     <div class="listing-actions">
+                      <a
+                        class="button button-quiet listing-whatsapp"
+                        [href]="whatsappUrl(product, listing.external_item_id)"
+                        (click)="
+                          track('whatsapp_click', {
+                            sku: product.sku,
+                            external_item_id: listing.external_item_id,
+                            placement: 'listing_detail',
+                          })
+                        "
+                        >Consultar este anúncio no WhatsApp</a
+                      >
                       @if (listing.permalink) {
                         <a
                           class="button button-quiet listing-external"
@@ -406,6 +451,9 @@ interface FitmentCard {
           <img src="/brand/goes-wordmark.png" alt="Goes Auto Parts" />
         </div>
         <p>Reposição para veículos chineses, com foco em oficinas e profissionais da reparação.</p>
+        <a [href]="whatsappUrl()" (click)="track('whatsapp_click', { placement: 'footer' })"
+          >WhatsApp de atendimento: {{ contactPhone }}</a
+        >
       </footer>
     </main>
   `,
@@ -417,6 +465,8 @@ export class CatalogPage implements OnInit {
   readonly loading = signal(true);
   readonly error = signal(false);
   readonly selected = signal<CatalogProduct | null>(null);
+  readonly contactPhone = '(11) 91418-3670';
+  private readonly whatsappNumber = '55' + this.contactPhone.replace(/\D/g, '');
   readonly photoIndex = signal(0);
   readonly fitmentQuery = signal('');
   readonly expandedFitment = signal<string | null>(null);
@@ -618,5 +668,18 @@ export class CatalogPage implements OnInit {
       body: JSON.stringify({ name, source: 'site', anonymous_id: anonymousId, properties }),
       keepalive: true,
     }).catch(() => undefined);
+  }
+
+  whatsappUrl(product?: CatalogProduct, externalItemId?: string) {
+    const text = product
+      ? 'Olá, tudo bem? Poderiam confirmar a aplicação e a disponibilidade da peça ' +
+        product.name +
+        ' (SKU ' +
+        product.sku +
+        ')' +
+        (externalItemId ? ' do anúncio ' + externalItemId : '') +
+        '?'
+      : 'Olá, tudo bem? Poderiam ajudar na identificação de uma peça para oficina?';
+    return 'https://wa.me/' + this.whatsappNumber + '?text=' + encodeURIComponent(text);
   }
 }
