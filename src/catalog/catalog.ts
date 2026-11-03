@@ -173,6 +173,9 @@ interface FitmentCard {
                         $event.stopPropagation();
                         track('mercado_livre_click', {
                           sku: product.sku,
+                          provider: product.listings[0].provider,
+                          external_item_id: product.listings[0].external_item_id,
+                          listing_id: product.listings[0].external_item_id,
                           placement: 'product_card',
                         })
                       "
@@ -430,6 +433,9 @@ interface FitmentCard {
                           (click)="
                             track('mercado_livre_click', {
                               sku: product.sku,
+                              provider: listing.provider,
+                              external_item_id: listing.external_item_id,
+                              listing_id: listing.external_item_id,
                               placement: 'product_detail',
                             })
                           "
