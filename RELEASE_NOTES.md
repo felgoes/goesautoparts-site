@@ -1,5 +1,13 @@
 # Notas de versão
 
+## 08/11/2026 — cotação assistida e ranking de emplacamentos
+
+- A oficina pode informar veículo e peça, usar o esquema visual do carro para indicar o sistema e preparar o pedido de cotação no WhatsApp.
+- O ranking mensal de automóveis e comerciais leves mostra a competência e a fonte. Cada modelo abre a cotação com o veículo preenchido.
+- A fonte Source Sans 3 foi publicada e é servida pelo próprio site.
+
+Versão publicada: [79b6d62](https://github.com/felgoes/goesautoparts-site/commit/79b6d620b7fe4a9f8e1c687d6fb8bfb69a3732ea).
+
 ## 29/10/2026 — botão superior do WhatsApp e favicon verde
 
 - O atalho superior de atendimento ganhou ícone, fundo verde, estados de interação e foco visível; ele continua no cabeçalho em telas móveis.
