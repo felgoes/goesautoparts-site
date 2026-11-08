@@ -5,78 +5,7 @@
     <p>Conte o que você procura. A equipe confirma a aplicação e consulta preço e prazo.</p>
   </header>
   <div class="quote-layout">
-    <div class="vehicle-map">
-      <svg
-        viewBox="0 0 420 188"
-        role="img"
-        aria-label="Esquema ilustrativo de um carro em perspectiva"
-      >
-        <defs>
-          <linearGradient id="goes-car-body" x2="0.2" y2="1">
-            <stop stop-color="#466467" />
-            <stop offset="1" stop-color="#182c30" />
-          </linearGradient>
-        </defs>
-        <ellipse cx="210" cy="160" rx="188" ry="17" fill="#b0c2be" opacity=".46" />
-        <path
-          d="M58 115 96 68l29-13 31-34 99-3 54 36 47 14 23 22-8 48-38 16-245-1-29-16Z"
-          fill="url(#goes-car-body)"
-          stroke="#152b2a"
-          stroke-width="2"
-        />
-        <path d="m96 68 29-13 31-34 99-3 54 36-17 13-59-7-27-21-59 2-32 27Z" fill="#8da7a5" />
-        <path d="m128 62 23-19 55-2 21 20Z" fill="#233d44" />
-        <path d="m216 39 42-12 38 25-57 10Z" fill="#2f484e" />
-        <path d="m63 112 37-42 134-6 60 5 50 13-26 24-68-11-140 10Z" fill="#587775" />
-        <path d="m319 108 59-19-5 32-52 17Z" fill="#324c4e" />
-        <path d="m331 108 42-13-3 10-42 13Z" fill="#dfede5" />
-        <path d="M105 114h181m-135 0 2 22 81 1 4-25" fill="none" stroke="#98acaa" opacity=".58" />
-        <g fill="#152527" stroke="#93a5a3" stroke-width="3">
-          <ellipse cx="108" cy="145" rx="23" ry="27" />
-          <ellipse cx="278" cy="145" rx="23" ry="27" />
-        </g>
-        <g fill="#87a2a1">
-          <circle cx="108" cy="145" r="9" />
-          <circle cx="278" cy="145" r="9" />
-        </g>
-        <g
-          class="marker"
-          [class.active]="system()?.id === 'motor'"
-          (click)="selectSystem(systems[0])"
-        >
-          <circle cx="327" cy="84" r="13" />
-          <circle cx="327" cy="84" r="4" />
-        </g>
-        <g
-          class="marker"
-          [class.active]="system()?.id === 'freios'"
-          (click)="selectSystem(systems[1])"
-        >
-          <circle cx="278" cy="145" r="13" />
-          <circle cx="278" cy="145" r="4" />
-        </g>
-        <g
-          class="marker"
-          [class.active]="system()?.id === 'suspensao'"
-          (click)="selectSystem(systems[2])"
-        >
-          <circle cx="108" cy="126" r="13" />
-          <circle cx="108" cy="126" r="4" />
-        </g>
-      </svg>
-      <p>Não sabe o nome? Escolha um sistema.</p>
-      <div class="choices" role="group" aria-label="Sistema do veículo">
-        @for (option of systems; track option.id) {
-        <button
-          type="button"
-          [attr.aria-pressed]="system()?.id === option.id"
-          (click)="selectSystem(option)"
-        >
-          {{ option.name }}
-        </button>
-        }
-      </div>
-    </div>
+    <app-vehicle-viewer [selected]="system()" (picked)="selectSystem($event)" />
     <form ngNativeValidate (ngSubmit)="quote()">
       <label
         >Veículo

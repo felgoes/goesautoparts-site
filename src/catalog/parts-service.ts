@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, computed, inject, input, OnInit, output, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
+import { VehicleViewer, vehicleSystems, type VehicleSystem } from './vehicle/vehicle-viewer';
 
 interface RankingItem {
   model: string;
@@ -21,15 +22,9 @@ const segments = [
   { value: 'comercial_leve', label: 'Comerciais leves' },
 ] as const;
 
-const systems = [
-  { id: 'motor', name: 'Motor', example: 'Ex.: bico injetor ou código OEM' },
-  { id: 'freios', name: 'Freios', example: 'Ex.: pastilha dianteira ou código OEM' },
-  { id: 'suspensao', name: 'Suspensão', example: 'Ex.: bandeja esquerda ou código OEM' },
-] as const;
-
 @Component({
   selector: 'app-parts-service',
-  imports: [FormsModule, DecimalPipe],
+  imports: [FormsModule, DecimalPipe, VehicleViewer],
   templateUrl: './parts-service.html',
   styleUrl: './parts-service.scss',
 })
@@ -39,8 +34,8 @@ export class PartsService implements OnInit {
   readonly whatsapp = input.required<string>();
   readonly quoteOpened = output<void>();
   readonly segments = segments;
-  readonly systems = systems;
-  readonly system = signal<(typeof systems)[number] | null>(null);
+  readonly systems = vehicleSystems;
+  readonly system = signal<VehicleSystem | null>(null);
   readonly segment = signal<(typeof segments)[number]['value']>('automovel');
   readonly ranking = signal<Ranking | null>(null);
   readonly loading = signal(false);
@@ -89,7 +84,7 @@ export class PartsService implements OnInit {
     this.vehicle = model;
   }
 
-  selectSystem(option: (typeof systems)[number]) {
+  selectSystem(option: VehicleSystem) {
     this.system.set(this.system()?.id === option.id ? null : option);
   }
 
