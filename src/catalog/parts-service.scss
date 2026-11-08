@@ -1,0 +1,182 @@
+:host {
+  display: block;
+  width: min(1200px, calc(100% - 48px));
+  margin-inline: auto;
+  color: #132322;
+}
+.service {
+  padding: clamp(24px, 5vw, 56px) 0;
+  border-top: 1px solid #dce7e2;
+  scroll-margin-top: 20px;
+}
+.heading {
+  margin-bottom: 24px;
+  max-width: 660px;
+}
+.heading h2 {
+  font-size: clamp(1.85rem, 4vw, 2.65rem);
+  letter-spacing: -0.025em;
+  line-height: 1.05;
+  margin: 4px 0 8px;
+}
+.heading p,
+.vehicle-map p {
+  margin: 0;
+  color: #46605a;
+}
+.heading .eyebrow {
+  color: #06674f;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.78rem;
+}
+.quote-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(16px, 4vw, 44px);
+  align-items: center;
+}
+.vehicle-map {
+  background: #e9f2ed;
+  border: 1px solid #d9e7df;
+  padding: clamp(12px, 3vw, 24px);
+  border-radius: 8px;
+}
+.vehicle-map svg {
+  display: block;
+  width: 100%;
+  max-height: 205px;
+}
+.vehicle-map p {
+  margin-block: 8px;
+}
+.marker circle:first-child {
+  fill: #f3f8f4;
+  stroke: #335c56;
+  stroke-width: 2;
+}
+.marker circle:last-child {
+  fill: #335c56;
+}
+.marker.active circle:first-child {
+  fill: #007659;
+  stroke: #fff;
+  stroke-width: 3;
+}
+.marker.active circle:last-child {
+  fill: #fff;
+}
+.choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+button,
+.ranking-list a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 6px 12px;
+  border: 1px solid #b2c7be;
+  border-radius: 6px;
+  background: #fff;
+  color: #135746;
+  font: inherit;
+  font-weight: 650;
+  cursor: pointer;
+  text-decoration: none;
+}
+button:hover,
+.ranking-list a:hover {
+  background: #e7f1eb;
+}
+button[aria-pressed='true'],
+.primary {
+  background: #076b53;
+  border-color: #076b53;
+  color: #fff;
+}
+button[aria-pressed='true']:hover,
+.primary:hover {
+  background: #065943;
+}
+form {
+  display: grid;
+  gap: 11px;
+}
+form label {
+  display: block;
+  font-weight: 650;
+}
+label span,
+small {
+  color: #4b625b;
+  font-weight: 400;
+}
+form input {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 4px;
+  padding: 8px 10px;
+  min-height: 44px;
+  border: 1px solid #b2c7be;
+  border-radius: 6px;
+  background: #fff;
+  color: #132322;
+  font: inherit;
+  font-weight: 400;
+}
+.state {
+  color: #46605a;
+  margin: 14px 0 10px;
+}
+.state a {
+  color: #065943;
+}
+.ranking-list {
+  max-width: 760px;
+  list-style: none;
+  margin: 0 0 12px;
+  padding: 0;
+}
+.ranking-list li {
+  display: grid;
+  grid-template-columns: 2rem minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 9px;
+  padding: 8px 0;
+  border-bottom: 1px solid #dce7e2;
+}
+.ranking-list strong {
+  overflow-wrap: anywhere;
+}
+.ranking-list small {
+  display: block;
+}
+.position {
+  color: #076b53;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+}
+@media (max-width: 660px) {
+  :host {
+    width: calc(100% - 32px);
+  }
+  .quote-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .ranking-list li {
+    grid-template-columns: 1.4rem minmax(0, 1fr) auto;
+  }
+}
+
+.marker {
+  cursor: pointer;
+}
+.primary:disabled {
+  opacity: 0.55;
+  cursor: default;
+}

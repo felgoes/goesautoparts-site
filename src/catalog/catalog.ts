@@ -3,6 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, HostListener, OnInit, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CatalogFitment, CatalogProduct } from '../core/models';
+import { PartsService } from './parts-service';
 import { formatQuantity } from './quantity';
 
 interface FitmentCard {
@@ -17,7 +18,7 @@ interface FitmentCard {
 
 @Component({
   selector: 'app-catalog',
-  imports: [CurrencyPipe, FormsModule],
+  imports: [CurrencyPipe, FormsModule, PartsService],
   template: `
     <main class="catalog-shell">
       <header class="catalog-header">
@@ -26,7 +27,8 @@ interface FitmentCard {
         </a>
         <nav>
           <a href="#catalogo">Catálogo técnico</a>
-          <a href="#como-comprar">Como comprar</a>
+          <a href="#cotacao">Cotar peça</a>
+          <a href="#ranking">Ranking</a>
         </nav>
         <a
           class="header-cta"
@@ -62,12 +64,7 @@ interface FitmentCard {
           <p class="audience-note">Oficinas · mecânicos · auto centers · lojas de autopeças</p>
           <div class="hero-actions">
             <a class="button button-red" href="#catalogo">Buscar peça para oficina</a>
-            <a
-              class="button button-quiet"
-              [href]="whatsappUrl()"
-              (click)="track('whatsapp_click', { placement: 'hero' })"
-              >Falar com especialista</a
-            >
+            <a class="button button-quiet" href="#cotacao">Pedir cotação de peça</a>
           </div>
         </div>
       </section>
@@ -454,6 +451,11 @@ interface FitmentCard {
           </section>
         </div>
       }
+
+      <app-parts-service
+        [whatsapp]="whatsappUrl()"
+        (quoteOpened)="track('whatsapp_click', { placement: 'parts_quote' })"
+      />
 
       <section class="how-section" id="como-comprar">
         <div>

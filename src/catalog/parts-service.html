@@ -1,0 +1,163 @@
+<section class="service" id="cotacao" tabindex="-1" aria-labelledby="quote-title">
+  <header class="heading">
+    <p class="eyebrow">Atendimento para oficinas</p>
+    <h2 id="quote-title">Encontre e cote a peça certa.</h2>
+    <p>Conte o que você procura. A equipe confirma a aplicação e consulta preço e prazo.</p>
+  </header>
+  <div class="quote-layout">
+    <div class="vehicle-map">
+      <svg
+        viewBox="0 0 420 188"
+        role="img"
+        aria-label="Esquema ilustrativo de um carro em perspectiva"
+      >
+        <defs>
+          <linearGradient id="goes-car-body" x2="0.2" y2="1">
+            <stop stop-color="#466467" />
+            <stop offset="1" stop-color="#182c30" />
+          </linearGradient>
+        </defs>
+        <ellipse cx="210" cy="160" rx="188" ry="17" fill="#b0c2be" opacity=".46" />
+        <path
+          d="M58 115 96 68l29-13 31-34 99-3 54 36 47 14 23 22-8 48-38 16-245-1-29-16Z"
+          fill="url(#goes-car-body)"
+          stroke="#152b2a"
+          stroke-width="2"
+        />
+        <path d="m96 68 29-13 31-34 99-3 54 36-17 13-59-7-27-21-59 2-32 27Z" fill="#8da7a5" />
+        <path d="m128 62 23-19 55-2 21 20Z" fill="#233d44" />
+        <path d="m216 39 42-12 38 25-57 10Z" fill="#2f484e" />
+        <path d="m63 112 37-42 134-6 60 5 50 13-26 24-68-11-140 10Z" fill="#587775" />
+        <path d="m319 108 59-19-5 32-52 17Z" fill="#324c4e" />
+        <path d="m331 108 42-13-3 10-42 13Z" fill="#dfede5" />
+        <path d="M105 114h181m-135 0 2 22 81 1 4-25" fill="none" stroke="#98acaa" opacity=".58" />
+        <g fill="#152527" stroke="#93a5a3" stroke-width="3">
+          <ellipse cx="108" cy="145" rx="23" ry="27" />
+          <ellipse cx="278" cy="145" rx="23" ry="27" />
+        </g>
+        <g fill="#87a2a1">
+          <circle cx="108" cy="145" r="9" />
+          <circle cx="278" cy="145" r="9" />
+        </g>
+        <g
+          class="marker"
+          [class.active]="system()?.id === 'motor'"
+          (click)="selectSystem(systems[0])"
+        >
+          <circle cx="327" cy="84" r="13" />
+          <circle cx="327" cy="84" r="4" />
+        </g>
+        <g
+          class="marker"
+          [class.active]="system()?.id === 'freios'"
+          (click)="selectSystem(systems[1])"
+        >
+          <circle cx="278" cy="145" r="13" />
+          <circle cx="278" cy="145" r="4" />
+        </g>
+        <g
+          class="marker"
+          [class.active]="system()?.id === 'suspensao'"
+          (click)="selectSystem(systems[2])"
+        >
+          <circle cx="108" cy="126" r="13" />
+          <circle cx="108" cy="126" r="4" />
+        </g>
+      </svg>
+      <p>Não sabe o nome? Escolha um sistema.</p>
+      <div class="choices" role="group" aria-label="Sistema do veículo">
+        @for (option of systems; track option.id) {
+        <button
+          type="button"
+          [attr.aria-pressed]="system()?.id === option.id"
+          (click)="selectSystem(option)"
+        >
+          {{ option.name }}
+        </button>
+        }
+      </div>
+    </div>
+    <form ngNativeValidate (ngSubmit)="quote()">
+      <label
+        >Veículo
+        <input
+          name="vehicle"
+          [(ngModel)]="vehicle"
+          maxlength="100"
+          required
+          placeholder="Ex.: CAOA Chery Tiggo 7"
+      /></label>
+      <label
+        >Ano, motor ou versão <span>(se souber)</span>
+        <input
+          name="version"
+          [(ngModel)]="version"
+          maxlength="100"
+          placeholder="Ex.: 2023, 1.5 turbo"
+        />
+      </label>
+      <label
+        >Peça ou referência
+        <input
+          name="part"
+          [(ngModel)]="part"
+          maxlength="180"
+          [required]="!system()"
+          [placeholder]="system()?.example ?? 'Ex.: sensor ABS ou código OEM'"
+      /></label>
+      <button class="primary" type="submit" [disabled]="!canQuote">Continuar no WhatsApp</button>
+    </form>
+  </div>
+</section>
+
+<section class="service" id="ranking" aria-labelledby="ranking-title">
+  <header class="heading">
+    <p class="eyebrow">Mercado automotivo</p>
+    <h2 id="ranking-title">Mais emplacados no Brasil</h2>
+    <p>Top 20 de veículos novos por segmento. Escolha um modelo para iniciar uma cotação.</p>
+  </header>
+  <div class="choices" role="group" aria-label="Segmento do ranking">
+    @for (option of segments; track option.value) {
+    <button
+      type="button"
+      [attr.aria-pressed]="segment() === option.value"
+      (click)="loadRanking(option.value)"
+    >
+      {{ option.label }}
+    </button>
+    }
+  </div>
+  @if (loading()) {
+  <p class="state" role="status">Carregando ranking…</p>
+  } @else if (failed()) {
+  <p class="state" role="status">Não foi possível carregar o ranking.</p>
+  <button type="button" (click)="loadRanking()">Tentar novamente</button>
+  } @else if (ranking(); as data) { @if (visible().length) {
+  <p class="state">
+    Competência {{ periodLabel() }} · <a [href]="data.source_url">{{ data.source }}</a>
+  </p>
+  <ol class="ranking-list">
+    @for (row of visible(); track $index; let position = $index) {
+    <li>
+      <span class="position">{{ position + 1 }}</span>
+      <div>
+        <strong>{{ row.model }}</strong>
+        <small>{{ row.registrations | number: '1.0-0' : 'pt-BR' }} emplacamentos</small>
+      </div>
+      <a
+        href="#cotacao"
+        [attr.aria-label]="'Cotar peça para ' + row.model"
+        (click)="quoteVehicle(row.model)"
+        >Cotar peça</a
+      >
+    </li>
+    }
+  </ol>
+  @if (data.items.length > 5) {
+  <button type="button" [attr.aria-expanded]="expanded()" (click)="expanded.update(toggle)">
+    {{ expanded() ? 'Mostrar apenas os 5 primeiros' : 'Ver ranking completo' }}
+  </button>
+  } } @else {
+  <p class="state" role="status">Ainda não há uma publicação disponível para este segmento.</p>
+  } }
+</section>
