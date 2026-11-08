@@ -1,5 +1,12 @@
 # Notas de versão
 
+## 08/11/2026 — carro 3D na cotação
+
+- O explorador de peças agora mostra um veículo 3D que pode ser girado por arrasto ou pelos botões.
+- Os pontos de motor, freios e suspensão orientam o preenchimento da cotação. Os botões também funcionam quando o 3D não carrega.
+
+Versão publicada: [0f47020](https://github.com/felgoes/goesautoparts-site/commit/0f47020286677acbc4a173cb577f1f263d494d5a).
+
 ## 08/11/2026 — cotação assistida e ranking de emplacamentos
 
 - A oficina pode informar veículo e peça, usar o esquema visual do carro para indicar o sistema e preparar o pedido de cotação no WhatsApp.
