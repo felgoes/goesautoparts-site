@@ -65,6 +65,7 @@ interface FitmentCard {
           <div class="hero-actions">
             <a class="button button-red" href="#catalogo">Buscar peça para oficina</a>
             <a class="button button-quiet" href="#cotacao">Pedir cotação de peça</a>
+            <a class="button button-quiet" href="#ranking">Ver ranking</a>
           </div>
         </div>
       </section>
