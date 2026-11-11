@@ -1,9 +1,0 @@
-Charcoal five-door crossover SUV
-Original model: Innerscene
-https://www.innerscene.com/tools/library/3d-parts/charcoal-five-door-crossover-suv-a1996830
-
-Licensed under Creative Commons Zero v1.0 Universal (CC0 1.0).
-https://creativecommons.org/publicdomain/zero/1.0/
-
-This copy was optimized with glTF Transform 4.5.1 (mesh joining, welding,
-simplification and quantization). It does not depict a specific vehicle.

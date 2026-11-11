@@ -4,8 +4,10 @@
     <h2 id="quote-title">Encontre e cote a peça certa.</h2>
     <p>Conte o que você procura. A equipe confirma a aplicação e consulta preço e prazo.</p>
   </header>
+  @if (quoteContextError()) {
+  <p class="state" role="status">Não foi possível preencher esta peça automaticamente.</p>
+  }
   <div class="quote-layout">
-    <app-vehicle-viewer [selected]="system()" (picked)="selectSystem($event)" />
     <form ngNativeValidate (ngSubmit)="quote()">
       <label
         >Veículo
@@ -15,7 +17,8 @@
           maxlength="100"
           required
           placeholder="Ex.: CAOA Chery Tiggo 7"
-      /></label>
+        />
+      </label>
       <label
         >Ano, motor ou versão <span>(se souber)</span>
         <input
@@ -31,19 +34,19 @@
           name="part"
           [(ngModel)]="part"
           maxlength="180"
-          [required]="!system()"
-          [placeholder]="system()?.example ?? 'Ex.: sensor ABS ou código OEM'"
-      /></label>
+          required
+          placeholder="Ex.: sensor ABS ou código OEM"
+        />
+      </label>
       <button class="primary" type="submit" [disabled]="!canQuote">Continuar no WhatsApp</button>
     </form>
   </div>
 </section>
-
 <section class="service" id="ranking" aria-labelledby="ranking-title">
   <header class="heading">
     <p class="eyebrow">Mercado automotivo</p>
     <h2 id="ranking-title">Mais emplacados no Brasil</h2>
-    <p>Top 20 de veículos novos por segmento. Escolha um modelo para iniciar uma cotação.</p>
+    <p>Emplacamentos de veículos novos por segmento, com competência e fonte.</p>
   </header>
   <div class="choices" role="group" aria-label="Segmento do ranking">
     @for (option of segments; track option.value) {
@@ -70,15 +73,9 @@
     <li>
       <span class="position">{{ position + 1 }}</span>
       <div>
-        <strong>{{ row.model }}</strong>
-        <small>{{ row.registrations | number: '1.0-0' : 'pt-BR' }} emplacamentos</small>
+        <strong>{{ row.model }}</strong
+        ><small>{{ row.registrations | number: '1.0-0' : 'pt-BR' }} emplacamentos</small>
       </div>
-      <a
-        href="#cotacao"
-        [attr.aria-label]="'Cotar peça para ' + row.model"
-        (click)="quoteVehicle(row.model)"
-        >Cotar peça</a
-      >
     </li>
     }
   </ol>

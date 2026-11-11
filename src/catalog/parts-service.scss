@@ -31,18 +31,14 @@
   font-size: 0.78rem;
 }
 .quote-layout {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: clamp(16px, 4vw, 44px);
-  align-items: center;
+  display: block;
 }
 .choices {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
 }
-button,
-.ranking-list a {
+button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -57,8 +53,7 @@ button,
   cursor: pointer;
   text-decoration: none;
 }
-button:hover,
-.ranking-list a:hover {
+button:hover {
   background: #e7f1eb;
 }
 button[aria-pressed='true'],
@@ -73,6 +68,7 @@ button[aria-pressed='true']:hover,
 }
 form {
   display: grid;
+  max-width: 760px;
   gap: 11px;
 }
 form label {
@@ -113,7 +109,7 @@ form input {
 }
 .ranking-list li {
   display: grid;
-  grid-template-columns: 2rem minmax(0, 1fr) auto;
+  grid-template-columns: 2rem minmax(0, 1fr);
   align-items: center;
   gap: 9px;
   padding: 8px 0;
@@ -134,11 +130,8 @@ form input {
   :host {
     width: calc(100% - 32px);
   }
-  .quote-layout {
-    grid-template-columns: minmax(0, 1fr);
-  }
   .ranking-list li {
-    grid-template-columns: 1.4rem minmax(0, 1fr) auto;
+    grid-template-columns: 1.4rem minmax(0, 1fr);
   }
 }
 

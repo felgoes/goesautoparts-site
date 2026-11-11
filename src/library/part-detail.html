@@ -1,0 +1,43 @@
+<div class="detail-layout">
+  <div class="photo-grid" aria-label="Fotos aprovadas da peça">
+    @for (photo of photos(); track photo.id) {
+    <figure>
+      <img
+        [src]="photo.variants[0]?.src"
+        [srcset]="photoSrcSet(photo)"
+        [alt]="photo.alt"
+        loading="lazy"
+      />
+      <figcaption>{{ photo.credit }}</figcaption>
+    </figure>
+    }
+  </div>
+  <div class="detail-copy">
+    <p class="reference-label">
+      {{ part().reference.kind === 'oem' ? 'Referência OEM' : 'Referência do fabricante' }}
+    </p>
+    <code class="reference">{{ part().reference.code }}</code>
+    <p>{{ part().comparison }}</p>
+    <div class="actions">
+      <button class="primary" type="button" (click)="copyCode()">Copiar código</button>
+      @if (offerState() === 'resolved') {
+      <a class="button secondary" [href]="catalogUrl()">Ver no catálogo</a> }
+      <a class="button secondary" [href]="quoteUrl()">Pedir cotação</a>
+    </div>
+    <p class="copy-status" aria-live="polite">{{ copyMessage() }}</p>
+    @if (offerState() === 'resolved' && offer(); as product) {
+    <p class="offer">
+      Oferta atual: {{ product.sale_price | currency:'BRL' }} · {{ product.in_stock ? 'Em estoque' :
+      'Fora de estoque' }}
+    </p>
+    } @else if (offerState() === 'missing') {
+    <p class="offer">Oferta não localizada</p>
+    } @else if (offerState() === 'duplicate') {
+    <p class="offer">Integração indisponível para revisão</p>
+    } @else if (offerState() === 'error') {
+    <p class="offer">Não foi possível consultar a oferta agora</p>
+    } @else if (offerState() === 'loading') {
+    <p class="offer" role="status">Consultando oferta atual…</p>
+    }
+  </div>
+</div>

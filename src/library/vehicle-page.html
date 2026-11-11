@@ -1,0 +1,85 @@
+@if (entry(); as data) {
+<main class="vehicle-shell">
+  <header class="library-header">
+    <a class="brand" routerLink="/" aria-label="Goes Auto Parts"
+      ><img src="/brand/goes-wordmark.png" alt="Goes Auto Parts"
+    /></a>
+    <nav aria-label="Navegação principal">
+      <a routerLink="/" fragment="catalogo">Catálogo técnico</a
+      ><a routerLink="/consulta-por-carro">Biblioteca</a
+      ><a routerLink="/" fragment="ranking">Ranking</a>
+    </nav>
+  </header>
+  <p class="breadcrumb">
+    <a routerLink="/consulta-por-carro">Biblioteca</a> / {{ data.vehicle.make }} / {{
+    data.vehicle.model }}
+  </p>
+  <section class="vehicle-hero">
+    <figure class="cover">
+      <img
+        [src]="data.cover.variants[0].src"
+        [width]="data.cover.variants[0].width"
+        [height]="data.cover.variants[0].height"
+        [alt]="data.cover.alt"
+        fetchpriority="high"
+      />
+      <figcaption>{{ data.cover.credit }}</figcaption>
+    </figure>
+    <div class="vehicle-copy">
+      <p class="eyebrow">{{ data.vehicle.make }} · Brasil</p>
+      <h1>{{ data.vehicle.model }} {{ data.vehicle.trim }}</h1>
+      <dl class="specs">
+        <div>
+          <dt>Ano-modelo</dt>
+          <dd>{{ data.vehicle.modelYear }}</dd>
+        </div>
+        <div>
+          <dt>Motor</dt>
+          <dd>{{ data.vehicle.engine }}</dd>
+        </div>
+        <div>
+          <dt>Câmbio</dt>
+          <dd>{{ data.vehicle.transmission }}</dd>
+        </div>
+      </dl>
+      <a class="button primary" href="#pecas">Ver peças</a>
+    </div>
+  </section>
+  <section class="parts-section" id="pecas" aria-labelledby="parts-heading">
+    <h2 id="parts-heading">Peças consultáveis</h2>
+    <p class="section-intro">Compare a referência, a gravação e o conector com as fotos.</p>
+    @for (part of data.parts; track part.id) {
+    <article class="part-card">
+      <h3 [id]="part.id" tabindex="-1">{{ part.name }}</h3>
+      @if (expandedPart() === part.id) {
+      <app-part-detail
+        [part]="part"
+        [vehicleId]="data.vehicle.id"
+        [partRoute]="data.route"
+        [entrySource]="entrySource()"
+      />
+      } @else {
+      <p class="part-summary">{{ part.reference.code }}</p>
+      <button class="button secondary" type="button" (click)="openPart(part.id)">
+        Ver detalhes
+      </button>
+      }
+    </article>
+    }
+  </section>
+  <section class="credits">
+    <h2>Créditos das imagens</h2>
+    <ul>
+      @for (source of data.sources; track source.id) { @if (source.scope === 'photo' && source.url)
+      {
+      <li><a [href]="source.url">{{ source.title }}</a></li>
+      } }
+    </ul>
+  </section>
+  <footer>
+    <a routerLink="/consulta-por-carro">Voltar à Biblioteca</a><span>Goes Auto Parts</span>
+  </footer>
+</main>
+} @else {
+<app-library-not-found />
+}

@@ -1,22 +1,30 @@
 import { DecimalPipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Component, computed, inject, input, OnInit, output, signal } from '@angular/core';
+import {
+  Component,
+  computed,
+  inject,
+  input,
+  OnInit,
+  OnChanges,
+  output,
+  signal,
+  SimpleChanges,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { VehicleViewer, vehicleSystems, type VehicleSystem } from './vehicle/vehicle-viewer';
+import type { QuoteContext } from '../library/library.models';
 
 interface RankingItem {
   model: string;
   registrations: number;
 }
-
 interface Ranking {
   period: string | null;
   source: string;
   source_url: string;
   items: RankingItem[];
 }
-
 const segments = [
   { value: 'automovel', label: 'Automóveis' },
   { value: 'comercial_leve', label: 'Comerciais leves' },
@@ -24,18 +32,18 @@ const segments = [
 
 @Component({
   selector: 'app-parts-service',
-  imports: [FormsModule, DecimalPipe, VehicleViewer],
+  imports: [FormsModule, DecimalPipe],
   templateUrl: './parts-service.html',
   styleUrl: './parts-service.scss',
 })
-export class PartsService implements OnInit {
+export class PartsService implements OnInit, OnChanges {
   private readonly http = inject(HttpClient);
   private request?: Subscription;
   readonly whatsapp = input.required<string>();
-  readonly quoteOpened = output<void>();
+  readonly quoteOpened = output<'library_quote' | 'parts_quote'>();
+  readonly quoteContext = input<QuoteContext | null>(null);
+  readonly quoteContextError = input(false);
   readonly segments = segments;
-  readonly systems = vehicleSystems;
-  readonly system = signal<VehicleSystem | null>(null);
   readonly segment = signal<(typeof segments)[number]['value']>('automovel');
   readonly ranking = signal<Ranking | null>(null);
   readonly loading = signal(false);
@@ -49,7 +57,6 @@ export class PartsService implements OnInit {
     const [year, month] = period.split('-');
     return month + '/' + year;
   });
-
   vehicle = '';
   version = '';
   part = '';
@@ -57,7 +64,14 @@ export class PartsService implements OnInit {
   ngOnInit() {
     this.loadRanking();
   }
-
+  ngOnChanges(changes: SimpleChanges) {
+    if (!changes['quoteContext']) return;
+    const context = this.quoteContext();
+    if (!context) return;
+    this.vehicle = context.vehicle.slice(0, 100);
+    this.version = context.version.slice(0, 100);
+    this.part = context.part.slice(0, 180);
+  }
   loadRanking(category = this.segment()) {
     this.request?.unsubscribe();
     this.segment.set(category);
@@ -78,32 +92,18 @@ export class PartsService implements OnInit {
         },
       });
   }
-
-  quoteVehicle(model: string) {
-    if (model !== this.vehicle) this.version = '';
-    this.vehicle = model;
-  }
-
-  selectSystem(option: VehicleSystem) {
-    this.system.set(this.system()?.id === option.id ? null : option);
-  }
-
   get canQuote() {
-    return Boolean(this.vehicle.trim() && (this.part.trim() || this.system()));
+    return Boolean(this.vehicle.trim() && this.part.trim());
   }
-
   quote() {
     const vehicle = this.vehicle.trim();
     const part = this.part.trim();
-    const system = this.system();
-    if (!vehicle || (!part && !system)) return;
-
+    if (!vehicle || !part) return;
     const text = [
       'Olá! Gostaria de identificar e cotar uma peça pela Goes Auto Parts.',
       'Veículo: ' + vehicle,
       this.version.trim() && 'Ano/motor/versão: ' + this.version.trim(),
-      system && 'Sistema: ' + system.name,
-      part && 'Peça ou referência: ' + part,
+      'Peça ou referência: ' + part,
       'Podem confirmar a aplicação, o preço e o prazo?',
     ]
       .filter(Boolean)
@@ -111,6 +111,8 @@ export class PartsService implements OnInit {
     const url = new URL(this.whatsapp());
     url.searchParams.set('text', text);
     window.open(url.href, '_blank', 'noopener,noreferrer');
-    this.quoteOpened.emit();
+    this.quoteOpened.emit(
+      this.quoteContext()?.origin === 'library' ? 'library_quote' : 'parts_quote',
+    );
   }
 }

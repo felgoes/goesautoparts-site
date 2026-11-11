@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 1,
+  "publicationStatus": "draft",
+  "route": "/consulta-por-carro/caoa-chery/tiggo-5x",
+  "vehicle": {
+    "id": "br-caoa-chery-tiggo-5x-txs-2021-15t-dct6",
+    "market": "BR",
+    "make": "CAOA Chery",
+    "model": "Tiggo 5X",
+    "trim": "TXS",
+    "modelYear": 2021,
+    "engine": "1.5 Turbo Flex",
+    "transmission": "DCT de 6 marchas",
+    "externalIds": { "wikidata": "Q43539709", "fipeCode": null },
+    "review": {
+      "status": "pending",
+      "reviewer": null,
+      "reviewedAt": null,
+      "sourceIds": ["txs-2021-ficha-candidata"]
+    }
+  },
+  "cover": {
+    "id": "tiggo-5x-txs-2021-capa",
+    "role": "cover",
+    "alt": "Vista dianteira em três quartos do CAOA Chery Tiggo 5X TXS 2021",
+    "variants": [],
+    "author": null,
+    "originUrl": null,
+    "license": null,
+    "licenseUrl": null,
+    "credit": null,
+    "rightsEvidenceId": null,
+    "review": { "status": "pending", "reviewer": null, "reviewedAt": null, "sourceIds": [] }
+  },
+  "parts": [
+    {
+      "id": "bobina-de-ignicao",
+      "name": "Bobina de ignição",
+      "reference": {
+        "code": "F01R00A092",
+        "kind": "unclassified",
+        "manufacturer": null,
+        "review": { "status": "pending", "reviewer": null, "reviewedAt": null, "sourceIds": [] }
+      },
+      "catalogSku": "F01R00A092-GEN",
+      "comparison": "Compare a gravação e o conector com fotos reais aprovadas. A aplicação desta referência ainda está em revisão.",
+      "photos": [],
+      "fitment": {
+        "vehicleId": "br-caoa-chery-tiggo-5x-txs-2021-15t-dct6",
+        "review": { "status": "pending", "reviewer": null, "reviewedAt": null, "sourceIds": [] }
+      }
+    }
+  ],
+  "sources": [
+    {
+      "id": "txs-2021-ficha-candidata",
+      "title": "Ficha técnica Tiggo 5X TXS 2021 — documento candidato a conferência",
+      "url": "https://cheryho.com.br/wp-content/uploads/2021/12/Tiggo5x-FichaTecnica-2021-abril.pdf",
+      "evidenceId": null,
+      "scope": "vehicle",
+      "status": "pending",
+      "consultedAt": null
+    }
+  ]
+}

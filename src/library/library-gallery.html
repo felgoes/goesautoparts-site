@@ -1,0 +1,42 @@
+<main class="library-shell">
+  <header class="library-header">
+    <a class="brand" routerLink="/" aria-label="Goes Auto Parts"
+      ><img src="/brand/goes-wordmark.png" alt="Goes Auto Parts"
+    /></a>
+    <nav aria-label="Navegação principal">
+      <a routerLink="/" fragment="catalogo">Catálogo técnico</a
+      ><a routerLink="/consulta-por-carro" aria-current="page">Biblioteca</a
+      ><a routerLink="/" fragment="ranking">Ranking</a>
+    </nav>
+  </header>
+  <section class="gallery-content">
+    <p class="eyebrow">Biblioteca Goes Auto Parts</p>
+    <h1>Ache a sua peça</h1>
+    <p class="intro">Fotos, fichas técnicas e peças.</p>
+    @if (cards.length) {
+    <div class="vehicle-grid">
+      @for (card of cards; track card.vehicleId) {
+      <a class="vehicle-card" [routerLink]="card.route" [queryParams]="{ source: 'internal' }">
+        <img
+          [src]="card.thumbnail.src"
+          [width]="card.thumbnail.width"
+          [height]="card.thumbnail.height"
+          [alt]="card.thumbnail.alt"
+          loading="lazy"
+        />
+        <span class="vehicle-copy"
+          ><span class="eyebrow">{{ card.make }}</span
+          ><strong>{{ card.model }} {{ card.trim }}</strong><span>{{ card.modelYear }}</span></span
+        >
+      </a>
+      }
+    </div>
+    } @else {
+    <p class="empty" role="status">Ainda não há fichas publicadas</p>
+    }
+  </section>
+  <footer>
+    <a routerLink="/">Goes Auto Parts</a
+    ><span>Informação técnica para conferir peças e aplicações.</span>
+  </footer>
+</main>

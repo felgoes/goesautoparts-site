@@ -1,0 +1,133 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  background: #090a0d;
+  color: #f5f6f7;
+  font-family: 'Source Sans 3', Arial, sans-serif;
+}
+.library-shell {
+  width: min(1200px, calc(100% - 48px));
+  margin: auto;
+}
+.library-header {
+  min-height: 88px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  border-bottom: 1px solid #424950;
+}
+.brand img {
+  width: 190px;
+  height: 82px;
+  object-fit: contain;
+  filter: hue-rotate(174deg);
+}
+nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+a {
+  color: inherit;
+  text-underline-offset: 4px;
+}
+nav a[aria-current] {
+  text-decoration-color: #50c3a5;
+  text-decoration-thickness: 2px;
+}
+.gallery-content {
+  padding: 64px 0 88px;
+}
+.eyebrow {
+  margin: 0 0 10px;
+  color: #bbc2ca;
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+}
+h1 {
+  margin: 0;
+  font-size: clamp(36px, 5vw, 48px);
+  line-height: 1.08;
+  letter-spacing: -0.035em;
+}
+.intro {
+  margin: 12px 0 32px;
+  color: #bbc2ca;
+  font-size: 18px;
+}
+.empty {
+  padding: 24px;
+  border: 1px solid #424950;
+  background: #171a1e;
+  color: #bbc2ca;
+  max-width: 680px;
+}
+.vehicle-grid {
+  display: grid;
+  gap: 16px;
+}
+.vehicle-card {
+  display: grid;
+  grid-template-columns: minmax(240px, 38%) 1fr;
+  gap: 24px;
+  align-items: center;
+  padding: 16px;
+  border: 1px solid #424950;
+  background: #171a1e;
+  text-decoration: none;
+}
+.vehicle-card img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16/9;
+  object-fit: cover;
+  background: #090a0d;
+}
+.vehicle-copy {
+  display: grid;
+  gap: 8px;
+}
+.vehicle-copy strong {
+  font-size: 26px;
+}
+footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 24px 0;
+  border-top: 1px solid #424950;
+  color: #bbc2ca;
+}
+:focus-visible {
+  outline: 3px solid #50c3a5;
+  outline-offset: 4px;
+}
+@media (max-width: 599px) {
+  .library-shell {
+    width: calc(100% - 32px);
+  }
+  .library-header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 12px;
+    padding-block: 16px;
+  }
+  nav {
+    gap: 12px 16px;
+  }
+  .gallery-content {
+    padding: 40px 0 56px;
+  }
+  .vehicle-card {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .vehicle-copy strong {
+    font-size: 22px;
+  }
+  footer {
+    flex-direction: column;
+  }
+}

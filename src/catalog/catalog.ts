@@ -5,6 +5,12 @@ import { FormsModule } from '@angular/forms';
 import { CatalogFitment, CatalogProduct } from '../core/models';
 import { PartsService } from './parts-service';
 import { formatQuantity } from './quantity';
+import { ActivatedRoute, RouterLink, type ParamMap } from '@angular/router';
+import { CONTACT_PHONE_DISPLAY, contactWhatsappUrl } from '../shared/contact';
+import { TelemetryService } from '../shared/telemetry';
+import { LibraryRepository } from '../library/library.repository';
+import type { QuoteContext } from '../library/library.models';
+import { resolveExactSku } from '../library/catalog-offer';
 
 interface FitmentCard {
   key: string;
@@ -18,7 +24,7 @@ interface FitmentCard {
 
 @Component({
   selector: 'app-catalog',
-  imports: [CurrencyPipe, FormsModule, PartsService],
+  imports: [CurrencyPipe, FormsModule, PartsService, RouterLink],
   template: `
     <main class="catalog-shell">
       <header class="catalog-header">
@@ -27,6 +33,7 @@ interface FitmentCard {
         </a>
         <nav>
           <a href="#catalogo">Catálogo técnico</a>
+          <a routerLink="/consulta-por-carro" [queryParams]="{ source: 'menu' }">Biblioteca</a>
           <a href="#cotacao">Cotar peça</a>
           <a href="#ranking">Ranking</a>
         </nav>
@@ -93,6 +100,9 @@ interface FitmentCard {
           </label>
           <button class="button button-dark" (click)="load()">Buscar no catálogo</button>
         </div>
+        @if (skuMessage()) {
+          <p class="catalog-state" role="status">{{ skuMessage() }}</p>
+        }
         @if (loading()) {
           <div class="catalog-state">Atualizando o catálogo...</div>
         } @else if (error()) {
@@ -455,7 +465,9 @@ interface FitmentCard {
 
       <app-parts-service
         [whatsapp]="whatsappUrl()"
-        (quoteOpened)="track('whatsapp_click', { placement: 'parts_quote' })"
+        [quoteContext]="quoteContext()"
+        [quoteContextError]="quoteContextError()"
+        (quoteOpened)="trackQuote($event)"
       />
 
       <section class="how-section" id="como-comprar">
@@ -485,12 +497,20 @@ interface FitmentCard {
 })
 export class CatalogPage implements OnInit {
   private readonly http = inject(HttpClient);
+  private readonly route = inject(ActivatedRoute);
+  private readonly library = inject(LibraryRepository);
+  private readonly telemetry = inject(TelemetryService);
+  readonly quoteContext = signal<QuoteContext | null>(null);
+  readonly quoteContextError = signal(false);
+  readonly quoteEntrySource = signal<'menu' | 'direct' | 'internal'>('direct');
+  readonly skuMessage = signal('');
+  private requestedSku = '';
+  private quoteContextRequest = 0;
   readonly products = signal<CatalogProduct[]>([]);
   readonly loading = signal(true);
   readonly error = signal(false);
   readonly selected = signal<CatalogProduct | null>(null);
-  readonly contactPhone = '(11) 91418-3670';
-  private readonly whatsappNumber = '55' + this.contactPhone.replace(/\D/g, '');
+  readonly contactPhone = CONTACT_PHONE_DISPLAY;
   readonly photoIndex = signal(0);
   readonly fitmentQuery = signal('');
   readonly expandedFitment = signal<string | null>(null);
@@ -516,16 +536,48 @@ export class CatalogPage implements OnInit {
 
   ngOnInit() {
     this.track('landing_view');
+    const initial = this.route.snapshot.queryParamMap;
+    this.requestedSku = initial.get('sku') ?? '';
+    if (this.requestedSku) this.search = this.requestedSku;
+    this.resolveQuoteContext(initial);
+    this.route.queryParamMap.subscribe((params) => {
+      const sku = params.get('sku') ?? '';
+      if (sku !== this.requestedSku) {
+        this.requestedSku = sku;
+        this.skuMessage.set('');
+        this.search = sku;
+        this.load();
+      }
+      this.resolveQuoteContext(params);
+    });
     this.load();
+  }
+
+  private async resolveQuoteContext(params: ParamMap) {
+    const request = ++this.quoteContextRequest;
+    const source = params.get('source');
+    this.quoteEntrySource.set(source === 'menu' || source === 'internal' ? source : 'direct');
+    const vehicleId = params.get('vehicle_id');
+    const partId = params.get('part_id');
+    if (!vehicleId || !partId) {
+      this.quoteContext.set(null);
+      this.quoteContextError.set(false);
+      return;
+    }
+    const context = await this.library.quoteContext(vehicleId, partId);
+    if (request !== this.quoteContextRequest) return;
+    this.quoteContext.set(context);
+    this.quoteContextError.set(!context);
   }
 
   load() {
     this.loading.set(true);
     this.error.set(false);
     let params = new HttpParams();
-    const query = this.search.trim();
+    const query = this.requestedSku || this.search.trim();
     if (query) {
       params = params.set('search', query);
+      if (this.requestedSku) params = params.set('limit', '100');
       if (query !== this.lastTrackedSearch) {
         this.lastTrackedSearch = query;
         this.track('catalog_search', { source: 'site' });
@@ -534,6 +586,17 @@ export class CatalogPage implements OnInit {
     this.http.get<CatalogProduct[]>('/api/v1/catalog/products', { params }).subscribe({
       next: (products) => {
         this.products.set(products);
+        if (this.requestedSku) {
+          const match = resolveExactSku(products, this.requestedSku);
+          if (match.status === 'resolved') {
+            this.skuMessage.set('');
+            this.openProduct(match.product);
+          } else if (match.status === 'duplicate') {
+            this.skuMessage.set('Integração indisponível para revisão.');
+          } else {
+            this.skuMessage.set('Nenhuma correspondência exata para este SKU.');
+          }
+        }
         if (!products.length && query) this.track('catalog_empty_result', { source: 'site' });
         this.loading.set(false);
       },
@@ -545,6 +608,8 @@ export class CatalogPage implements OnInit {
   }
 
   onSearch(value: string) {
+    this.requestedSku = '';
+    this.skuMessage.set('');
     this.search = value;
     clearTimeout(this.searchTimer);
     this.searchTimer = setTimeout(() => this.load(), 280);
@@ -683,15 +748,20 @@ export class CatalogPage implements OnInit {
   }
 
   track(name: string, properties: Record<string, string> = {}) {
-    const key = 'goes-autoparts-anonymous-id';
-    const anonymousId = localStorage.getItem(key) ?? crypto.randomUUID();
-    localStorage.setItem(key, anonymousId);
-    void fetch('/api/v1/telemetry/events', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, source: 'site', anonymous_id: anonymousId, properties }),
-      keepalive: true,
-    }).catch(() => undefined);
+    this.telemetry.track(name as Parameters<TelemetryService['track']>[0], properties);
+  }
+  trackQuote(placement: 'library_quote' | 'parts_quote') {
+    const context = this.quoteContext();
+    this.track('whatsapp_click', {
+      placement,
+      ...(context
+        ? {
+            vehicle_id: context.vehicleId,
+            part_id: context.partId,
+            entry_source: this.quoteEntrySource(),
+          }
+        : {}),
+    });
   }
 
   whatsappUrl(product?: CatalogProduct, externalItemId?: string) {
@@ -704,6 +774,6 @@ export class CatalogPage implements OnInit {
         (externalItemId ? ' do anúncio ' + externalItemId : '') +
         '?'
       : 'Olá, tudo bem? Poderiam ajudar na identificação de uma peça para oficina?';
-    return 'https://wa.me/' + this.whatsappNumber + '?text=' + encodeURIComponent(text);
+    return contactWhatsappUrl(text);
   }
 }
