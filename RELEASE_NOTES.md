@@ -1,3 +1,7 @@
+## 11/11/2026 — Biblioteca técnica
+
+- A Biblioteca tem galeria e rotas de ficha preparadas para conteúdo aprovado. Este deploy não inclui fotos nem aplicação piloto; a galeria informa que ainda não há fichas publicadas. O visualizador 3D foi removido, a cotação explícita por WhatsApp foi mantida e o ranking ficou informativo. Publicado e verificado em 11/11/2026 no commit `f37ec93b029568a3b81bb2fb1b48e23eccb202c5` pelo wrapper oficial do site.
+
 # Notas de versão
 
 ## 08/11/2026 — carro 3D na cotação
